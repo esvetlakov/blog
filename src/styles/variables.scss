@@ -1,0 +1,9 @@
+$primary-color: #2196f3;
+$secondary-color: #a0b0b9;
+$primary-outline: 1px solid
+  darken(
+    $color: $primary-color,
+    $amount: 20,
+  );
+
+$screen-tablet: 900px;
