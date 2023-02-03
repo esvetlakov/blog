@@ -1,0 +1,41 @@
+@import '../../styles/variables.scss';
+
+.header {
+  position: fixed;
+  z-index: 100;
+
+  height: 80px;
+  width: 100%;
+
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  text-decoration: none;
+
+  margin-left: 22px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 28px;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+
+.btnWrapper {
+  margin-right: 22px;
+}
+
+.signin {
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.signup {
+  margin-left: 19px;
+  border-color: $success-color;
+  color: $success-color;
+}

@@ -1,0 +1,86 @@
+@import '../../styles/variables.scss';
+
+.card {
+  background-color: white;
+  height: 110px;
+  width: 940px;
+  padding: 15px;
+  
+  border-radius: 5px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  
+  font-family: Inter;
+  margin-bottom: 25px;
+
+  filter: drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.15));
+}
+
+.card:first-child {
+  margin-top: 25px;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  gap: 13px;
+}
+
+.title {
+  margin: 0;
+  color: $primary-color;
+  font-size: 20px;
+  line-height: 28px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.likeBtn {
+  padding: 4px;
+  padding-top: 6px;
+  border: none;
+  background-color: white;
+  cursor: pointer;
+
+  display: flex;
+  gap: 5px;
+  align-self: center;
+}
+
+.tagList {
+  margin-top: 4px;
+}
+
+.desc {
+  font-size: 12px;
+  overflow: hidden;
+}
+
+.author {
+  display: flex;
+  flex-direction: row;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  text-align: end;
+  margin-right: 12px;
+}
+
+.userName {
+  font-size: 18px;
+  line-height: 28px;
+}
+
+.date {
+  font-size: 12px;
+  line-height: 22px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.avatar {
+  height: 46px;
+}

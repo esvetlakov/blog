@@ -1,30 +1,17 @@
 @import './variables';
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 
 body {
     padding: 0;
     margin: 0;
-    background-color: #F3F7FA; 
+    background-color: #EBEEF3;
 }
 
-.logo {
-  display: flex;
-  justify-content: center;
-  margin-top: 50px;
-
-  @media (max-width: $screen-tablet) {
-    margin-top: 10px;
+.ant-pagination-item-active {
+    background-color: $primary-color !important;
+    border-color: $primary-color !important;
   }
-}
 
-.main {
-  margin-top: 50px;
-  display: flex;
-  justify-content: center;
-
-  @media (max-width: $screen-tablet) {
-    flex-direction: column;
-    justify-content: center;
-    margin-top: 10px;
+.ant-pagination-item-active a {
+    color: white !important;
   }
-}
