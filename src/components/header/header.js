@@ -6,7 +6,7 @@ import classes from './header.module.scss';
 export default function Header() {
   return (
     <header className={classes.header}>
-      <Link className={classes.logo} to="articles">
+      <Link className={classes.logo} to="/">
         Realworld Blog
       </Link>
       <div className={classes.btnWrapper}>

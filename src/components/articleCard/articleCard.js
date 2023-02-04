@@ -20,13 +20,13 @@ const heartIcon = (favorited) =>
   );
 
 export default function ArticleCard({ article }) {
-  const { title, description, createdAt, tagList, favorited, favoritesCount, author } = article;
+  const { title, description, createdAt, tagList, favorited, favoritesCount, author, slug } = article;
   const { username, image } = author;
   return (
     <div className={classes.card}>
       <div className={classes.mainInfo}>
         <div className={classes.header}>
-          <Link className={classes.title} to="articles">
+          <Link className={classes.title} to={`articles/${slug}`}>
             {title}
           </Link>
           <button className={classes.likeBtn} type="button">

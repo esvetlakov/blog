@@ -1,5 +1,7 @@
 $primary-color: rgba(24, 144, 255, 1);
 $success-color: rgba(82, 196, 26, 1);
+$text-color-primary: rgba(0, 0, 0, 0.75);
+$text-color-secondary: rgba(0, 0, 0, 0.5);
 $primary-outline: 1px solid
   darken(
     $color: $primary-color,

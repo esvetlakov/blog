@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import Header from '../header';
 import ArticlesPage from '../articlesPage';
+import ArticlePage from '../articlePage';
 
 export default function App() {
   return (
@@ -11,6 +12,7 @@ export default function App() {
         <Routes>
           <Route path="" element={<ArticlesPage />} />
           <Route path="articles" element={<ArticlesPage />} />
+          <Route path="articles/:slug" element={<ArticlePage />} />
         </Routes>
       </Router>
     </div>
