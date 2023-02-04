@@ -29,6 +29,7 @@
   font-weight: 500;
   font-size: 20px;
   line-height: 28px;
+  color: #262626;
 }
 
 .label {
@@ -41,6 +42,8 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 22px;
+
+  color: #262626;
 }
 
 .label input {
@@ -66,9 +69,37 @@
   transition: border 0.3s;
 }
 
-.label input:focus-visible {
-  outline: 1px solid $primary-color !important;
+.label input:focus {
+  border: 1px solid $primary-color;
+  outline: none;
   transition: border 0.3s;
+}
+
+.err input {
+  border: 1px solid rgba(245, 34, 45, 1);
+  outline: none;
+  transition: border 0.3s;
+}
+
+.err input:hover {
+  border: 1px solid rgba(245, 34, 45, 1);
+  outline: none;
+  transition: border 0.3s;
+}
+
+.err input:focus {
+  border: 1px solid rgba(245, 34, 45, 1);
+  outline: none;
+  transition: border 0.3s;
+}
+
+.errMsg {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  color: rgba(245, 34, 45, 1);
 }
 
 .labelCheckBox {
@@ -79,9 +110,27 @@
 
   border-top: 1px solid rgba(232, 232, 232, 1);
 
+  display: flex;
+  flex-direction: row;
+
   cursor: pointer;
 }
 
+.checkbox {
+  margin: 0;
+  margin-top: 3px;
+  width: 16px;
+  height: 16px;
+  align-items: flex-start;
+}
+
+.checkboxText {
+  margin-left: 5px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  color: #595959;
+}
 
 .submit {
   width: 320px;
