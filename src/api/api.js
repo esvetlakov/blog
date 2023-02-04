@@ -2,12 +2,11 @@
 // import { uid } from 'uid/single';
 import ky from 'ky';
 
-const _apiBase = 'https://blog.kata.academy/api';
+const _api = ky.create({ prefixUrl: 'https://blog.kata.academy/api' });
 
 const getArticles = async (offset) => {
-  const url = `${_apiBase}/articles?offset=${offset}`;
   try {
-    const res = await ky.get(url).json();
+    const res = await _api.get(`articles?offset=${offset}`).json();
     const { articles, articlesCount } = res;
     return { articles, articlesCount };
   } catch (err) {
@@ -17,9 +16,8 @@ const getArticles = async (offset) => {
 };
 
 const getArticleBySlug = async (slug) => {
-  const url = `${_apiBase}/articles/${slug}`;
   try {
-    const res = await ky.get(url).json();
+    const res = await _api.get(`articles/${slug}`).json();
     const { article } = res;
     return { ...article };
   } catch (err) {
@@ -28,9 +26,23 @@ const getArticleBySlug = async (slug) => {
   return null;
 };
 
+const createUser = async (data) => {
+  try {
+    const res = await _api.post('users', { json: data }).json();
+    return res;
+  } catch (error) {
+    if (error.name === 'HTTPError') {
+      const errorJson = await error.response.json();
+      return errorJson;
+    }
+  }
+  return null;
+};
+
 const api = {
   getArticles,
   getArticleBySlug,
+  createUser,
 };
 
 export default api;

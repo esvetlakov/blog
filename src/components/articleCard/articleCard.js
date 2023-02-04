@@ -2,12 +2,13 @@ import { format, parseISO } from 'date-fns';
 import { Avatar, Tag } from 'antd';
 import { HeartOutlined, HeartFilled } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import { uid } from 'uid/single';
 
 import classes from './articleCard.module.scss';
 
 const generateTagsList = (tags) =>
   tags.map((el) => (
-    <Tag className={classes.tag} key={el}>
+    <Tag className={classes.tag} key={uid(20)}>
       {el}
     </Tag>
   ));

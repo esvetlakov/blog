@@ -16,4 +16,8 @@ export const changeCurrentPage = (page) => (dispatch) => {
   dispatch({ type: 'CHANGE_PAGE', payload: page });
 };
 
-export const loadUser = () => {};
+export const createUser = (data) => async (dispatch) => {
+  dispatch({ type: 'REG_STARTED' });
+  const res = await api.createUser(data);
+  dispatch({ type: 'CREATE_USER_RESPONSE', payload: res });
+};

@@ -26,16 +26,39 @@
 }
 
 
-.btnWrapper {
+.wrapper {
   margin-right: 22px;
+  display: flex;
+  align-items: center;
 }
 
 .signin {
   color: rgba(0, 0, 0, 0.85);
 }
 
-.signup {
+.logout {
+  margin-left: 27px;
+  color: rgba(0, 0, 0, 0.85);
+  border-color: rgba(0, 0, 0, 0.85);
+}
+
+.greenBtn {
   margin-left: 19px;
   border-color: $success-color;
   color: $success-color;
+}
+
+.user {
+  margin-left: 27px;
+  text-decoration: none;
+  color:rgba(0, 0, 0, 0.85);
+}
+
+.username {
+  margin-right: 10px;
+
+  font-family: 'Inter';
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 28px;
 }

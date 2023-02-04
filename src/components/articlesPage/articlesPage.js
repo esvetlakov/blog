@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { useEffect } from 'react';
 import { Pagination, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
+import { uid } from 'uid/single';
 
 import { loadArticles, changeCurrentPage } from '../../redux/actions/actions';
 import ArticleCard from '../articleCard';
@@ -29,7 +30,7 @@ function ArticlesPage({ getArticles, changePage, articles }) {
     if (data.length === 0) {
       return null;
     }
-    const cards = data.map((el) => <ArticleCard article={el} key={el.slug} />);
+    const cards = data.map((el) => <ArticleCard article={el} key={uid(20)} />);
     return <div className="">{cards}</div>;
   };
 

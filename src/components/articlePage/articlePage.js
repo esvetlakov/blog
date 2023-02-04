@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import { Avatar, Tag, Spin } from 'antd';
 import { HeartOutlined, HeartFilled, LoadingOutlined } from '@ant-design/icons';
+import { uid } from 'uid/single';
 import ReactMarkdown from 'react-markdown';
 
 import { getCurrentArticle } from '../../redux/actions/actions';
@@ -21,7 +22,7 @@ const antIcon = (
 
 const generateTagsList = (tags) =>
   tags.map((el) => (
-    <Tag className={classes.tag} key={el}>
+    <Tag className={classes.tag} key={uid(20)}>
       {el}
     </Tag>
   ));
