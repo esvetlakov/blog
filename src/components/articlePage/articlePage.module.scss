@@ -32,6 +32,7 @@
 }
 
 .header {
+  width: 750px;
   display: flex;
   flex-direction: row;
   gap: 13px;
@@ -42,6 +43,7 @@
   color: $primary-color;
   font-size: 20px;
   line-height: 28px;
+  font-weight: 400;
   max-width: 600px;
 }
 
@@ -58,10 +60,12 @@
 }
 
 .tagList {
+  width: 750px;
   margin-top: 4px;
 }
 
 .desc {
+  width: 750px;
   font-size: 12px;
   overflow: hidden;
   color: $text-color-secondary;

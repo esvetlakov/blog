@@ -2,11 +2,19 @@ import { Button, Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { toast } from 'react-toastify';
+
+import { logOut } from '../../redux/actions/actions';
 
 import classes from './header.module.scss';
 
-function Header({ user }) {
+function Header({ user, logout }) {
   const { isAuth, username, image } = user;
+
+  const onClickLogout = () => {
+    logout();
+    toast.success('Successful logout', { delay: 100 });
+  };
 
   const loggedIn = () => {
     if (isAuth) {
@@ -21,7 +29,7 @@ function Header({ user }) {
             <span className={classes.username}>{username}</span>
             <Avatar size="large" icon={<UserOutlined />} src={image} />
           </Link>
-          <Button type="logout" size="large" ghost className={classes.logout}>
+          <Button type="logout" size="large" ghost className={classes.logout} onClick={onClickLogout}>
             Log out
           </Button>
         </>
@@ -59,4 +67,8 @@ const mapStateToProps = (state) => {
   return { user };
 };
 
-export default connect(mapStateToProps)(Header);
+const mapDispatchToProps = (dispatch) => ({
+  logout: () => dispatch(logOut()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

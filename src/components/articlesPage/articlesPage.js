@@ -18,13 +18,18 @@ const antIcon = (
   />
 );
 
-function ArticlesPage({ getArticles, changePage, articles }) {
+function ArticlesPage({ getArticles, changePage, articles, user }) {
   const { data, articlesCount, currentPage, loading } = articles;
+  const { token } = user;
+
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, []);
 
   useEffect(() => {
     const offset = (currentPage - 1) * 20;
-    getArticles(offset);
-  }, [getArticles, currentPage]);
+    getArticles(offset, token);
+  }, [getArticles, currentPage, token]);
 
   const createArticlesCards = () => {
     if (data.length === 0) {
@@ -36,7 +41,7 @@ function ArticlesPage({ getArticles, changePage, articles }) {
 
   const onChange = (e) => {
     const offset = (e - 1) * 20;
-    getArticles(offset);
+    getArticles(offset, token);
     changePage(e);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -59,12 +64,12 @@ function ArticlesPage({ getArticles, changePage, articles }) {
 }
 
 const mapStateToProps = (state) => {
-  const { articles } = state;
-  return { articles };
+  const { articles, user } = state;
+  return { articles, user };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  getArticles: (offset = 0) => dispatch(loadArticles(offset)),
+  getArticles: (offset, token) => dispatch(loadArticles(offset, token)),
   changePage: (page) => dispatch(changeCurrentPage(page)),
 });
 

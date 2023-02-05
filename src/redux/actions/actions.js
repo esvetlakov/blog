@@ -1,8 +1,9 @@
 import api from '../../api/api';
+import storage from '../../api/storage';
 
-export const loadArticles = (offset) => async (dispatch) => {
+export const loadArticles = (offset, token) => async (dispatch) => {
   dispatch({ type: 'LOADING' });
-  const res = await api.getArticles(offset);
+  const res = await api.getArticles(offset, token);
   dispatch({ type: 'LOAD_ARTICLES', payload: res });
 };
 
@@ -18,6 +19,50 @@ export const changeCurrentPage = (page) => (dispatch) => {
 
 export const createUser = (data) => async (dispatch) => {
   dispatch({ type: 'REG_STARTED' });
+  storage.clearStorage();
   const res = await api.createUser(data);
-  dispatch({ type: 'CREATE_USER_RESPONSE', payload: res });
+  if (res.errors) {
+    dispatch({ type: 'REGISTRATION_FAILED', payload: res });
+  } else {
+    storage.saveTokenToStorage(res.user.token);
+    dispatch({ type: 'REGISTRATION_SUCCESS', payload: res });
+  }
+};
+
+export const loginUser = (data) => async (dispatch) => {
+  dispatch({ type: 'REG_STARTED' });
+  storage.clearStorage();
+  const res = await api.loginUser(data);
+  if (res.errors) {
+    dispatch({ type: 'LOGIN_FAILED', payload: res });
+  } else {
+    storage.saveTokenToStorage(res.user.token);
+    dispatch({ type: 'LOGIN_SUCCESS', payload: res });
+  }
+};
+
+export const logOut = () => async (dispatch) => {
+  storage.clearStorage();
+  dispatch({ type: 'LOGOUT' });
+};
+
+export const loadSavedUser = () => async (dispatch) => {
+  if (storage.tokenCheck()) {
+    const token = storage.loadTokenFromStorage();
+    const res = await api.loadSavedUser(token);
+    dispatch({ type: 'LOAD_SAVED_USER', payload: res });
+  }
+};
+
+export const testCreateUser = (data) => async (dispatch) => {
+  dispatch({ type: 'REG_STARTED' });
+  console.log(data);
+  const res = {
+    user: {
+      username: data.user.username,
+      email: data.user.email,
+      token: 'kdfdfgg45io2f2f',
+    },
+  };
+  dispatch({ type: 'TEST_USER_CREATE', payload: res });
 };

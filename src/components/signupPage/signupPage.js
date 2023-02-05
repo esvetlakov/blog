@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 
-import { createUser } from '../../redux/actions/actions';
+import { createUser, testCreateUser } from '../../redux/actions/actions';
 
 import classes from './signupPage.module.scss';
 
@@ -17,10 +17,10 @@ const antIcon = (
     spin
   />
 );
-
-function SignupPage({ user, create }) {
+// eslint-disable-next-line
+function SignupPage({ user, create, test }) {
   const navigate = useNavigate();
-  const { regPending, usernameErr, emailErr, regSuccess } = user;
+  const { isPending, usernameErr, emailErr, regSuccess } = user;
   const {
     register,
     watch,
@@ -36,13 +36,14 @@ function SignupPage({ user, create }) {
     }
   }, [regSuccess, navigate]);
 
-  const onSubmit = (data) => {
-    create({ user: { username: data.username, email: data.email, password: data.password } });
+  // change to prod fn
+  const onSubmit = ({ username: name, email: mail, password: pwd }) => {
+    test({ user: { username: name, email: mail.toLowerCase(), password: pwd } });
   };
 
   return (
     <div className={classes.wrap}>
-      <Spin indicator={antIcon} spinning={regPending}>
+      <Spin indicator={antIcon} spinning={isPending}>
         <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
           <h2 className={classes.title}>Create new account</h2>
           <label className={!errors.usermame ? classes.label : `${classes.label} ${classes.err}`}>
@@ -75,7 +76,6 @@ function SignupPage({ user, create }) {
             Email
             <input
               type="email"
-              style={{ textTransform: 'lowercase' }}
               placeholder="Email address"
               {...register('email', {
                 required: 'Email is required',
@@ -158,6 +158,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   create: (data) => dispatch(createUser(data)),
+  test: (data) => dispatch(testCreateUser(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignupPage);
