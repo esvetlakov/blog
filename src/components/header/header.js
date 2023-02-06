@@ -1,5 +1,6 @@
-import { Button, Avatar } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+/* eslint no-unneeded-ternary: "error" */
+
+import { Button, Avatar, Skeleton } from 'antd';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -16,6 +17,23 @@ function Header({ user, logout }) {
     toast.success('Successful logout', { delay: 100 });
   };
 
+  const loading = () => {
+    if (username === '') {
+      return (
+        <>
+          <Skeleton.Button active size="small" shape="buttonShape" />
+          <Skeleton.Avatar active shape="circle" />
+        </>
+      );
+    }
+    return (
+      <>
+        <span className={classes.username}>{username}</span>
+        <Avatar size="large" src={image ? image : 'https://static.productionready.io/images/smiley-cyrus.jpg'} />
+      </>
+    );
+  };
+
   const loggedIn = () => {
     if (isAuth) {
       return (
@@ -25,9 +43,8 @@ function Header({ user, logout }) {
               Create Article
             </Button>
           </Link>
-          <Link to="edit-profile" className={classes.user}>
-            <span className={classes.username}>{username}</span>
-            <Avatar size="large" icon={<UserOutlined />} src={image} />
+          <Link to="profile" className={classes.user}>
+            {loading()}
           </Link>
           <Button type="logout" size="large" ghost className={classes.logout} onClick={onClickLogout}>
             Log out

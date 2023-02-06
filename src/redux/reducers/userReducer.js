@@ -1,6 +1,6 @@
 const initialState = {
-  username: 'testacc',
-  email: 'testacc@mail.ru',
+  username: '',
+  email: '',
   token:
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZGZiMjNhNmY4YmVlMWIwMDU1MWQzNiIsInVzZXJuYW1lIjoidGVzdGFjYyIsImV4cCI6MTY4MDgwOTU0MiwiaWF0IjoxNjc1NjI1NTQyfQ.QE0CUD2u-poQN1sw1kD81HQf1UYlj0dQmIO3QstgYTE',
   image: '',
@@ -65,6 +65,9 @@ function userReducer(state = initialState, action = {}) {
       newState.email = payload.user.email;
       newState.token = payload.user.token;
       newState.image = payload.user.image;
+      newState.isAuth = true;
+      break;
+    case 'SAVED_USER_TRUE':
       newState.isAuth = true;
       break;
     case 'TEST_USER_CREATE':

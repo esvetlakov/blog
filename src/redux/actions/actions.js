@@ -49,6 +49,7 @@ export const logOut = () => async (dispatch) => {
 export const loadSavedUser = () => async (dispatch) => {
   if (storage.tokenCheck()) {
     const token = storage.loadTokenFromStorage();
+    dispatch({ type: 'SAVED_USER_TRUE' });
     const res = await api.loadSavedUser(token);
     dispatch({ type: 'LOAD_SAVED_USER', payload: res });
   }
