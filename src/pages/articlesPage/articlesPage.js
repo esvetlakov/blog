@@ -4,7 +4,7 @@ import { Pagination, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { uid } from 'uid/single';
 
-import { loadArticles, changeCurrentPage } from '../../redux/actions/actions';
+import { loadArticles, changeCurrentPage, likeArticle } from '../../redux/actions/actions';
 import ArticleCard from '../../components/articleCard';
 
 import classes from './articlesPage.module.scss';
@@ -18,9 +18,9 @@ const antIcon = (
   />
 );
 
-function ArticlesPage({ getArticles, changePage, articles, user }) {
+function ArticlesPage({ getArticles, changePage, articles, user, likeClick }) {
   const { data, articlesCount, currentPage, loading } = articles;
-  const { token } = user;
+  const { token, isAuth } = user;
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
@@ -32,10 +32,10 @@ function ArticlesPage({ getArticles, changePage, articles, user }) {
   }, [getArticles, currentPage, token]);
 
   const createArticlesCards = () => {
-    if (data.length === 0) {
+    if (!data.pages) {
       return null;
     }
-    const cards = data.map((el) => <ArticleCard article={el} key={uid(20)} />);
+    const cards = data.map((el) => <ArticleCard article={el} likeClick={likeClick} isAuth={isAuth} key={uid(20)} />);
     return <div className="">{cards}</div>;
   };
 
@@ -71,6 +71,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   getArticles: (offset, token) => dispatch(loadArticles(offset, token)),
   changePage: (page) => dispatch(changeCurrentPage(page)),
+  likeClick: (slug, checked) => dispatch(likeArticle(slug, checked)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ArticlesPage);

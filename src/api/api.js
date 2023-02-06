@@ -22,8 +22,15 @@ const getArticles = async (offset, token) => {
 };
 
 const getArticleBySlug = async (slug) => {
+  const token = localStorage.getItem('token');
   try {
-    const res = await _api.get(`articles/${slug}`).json();
+    const res = await _api
+      .get(`articles/${slug}`, {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      })
+      .json();
     const { article } = res;
     return { ...article };
   } catch (err) {
@@ -79,6 +86,44 @@ const updateUser = async (data) => {
   return null;
 };
 
+const likeArticle = async (slug) => {
+  const token = localStorage.getItem('token');
+  try {
+    const res = await _api
+      .post(`articles/${slug}/favorite`, {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      })
+      .json();
+    return res;
+  } catch (error) {
+    if (error.name === 'HTTPError') {
+      console.log('err');
+    }
+  }
+  return null;
+};
+
+const dislikeArticle = async (slug) => {
+  const token = localStorage.getItem('token');
+  try {
+    const res = await _api
+      .delete(`articles/${slug}/favorite`, {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      })
+      .json();
+    return res;
+  } catch (error) {
+    if (error.name === 'HTTPError') {
+      console.log('err');
+    }
+  }
+  return null;
+};
+
 const loadSavedUser = async (token) => {
   try {
     const res = await _api
@@ -102,6 +147,8 @@ const api = {
   loginUser,
   loadSavedUser,
   updateUser,
+  likeArticle,
+  dislikeArticle,
 };
 
 export default api;

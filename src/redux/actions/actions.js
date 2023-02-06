@@ -3,6 +3,7 @@ import storage from '../../api/storage';
 
 export const loadArticles = (offset, token) => async (dispatch) => {
   dispatch({ type: 'LOADING' });
+  dispatch({ type: 'CLEAR_CURRENT_ARTICLE' });
   const res = await api.getArticles(offset, token);
   dispatch({ type: 'LOAD_ARTICLES', payload: res });
 };
@@ -63,5 +64,19 @@ export const updateUser = (data) => async (dispatch) => {
   } else {
     storage.saveTokenToStorage(res.user.token);
     dispatch({ type: 'PROFILE_SUCCESS', payload: res });
+  }
+};
+
+export const likeArticle = (slug, checked) => async (dispatch) => {
+  if (checked) {
+    const res = await api.likeArticle(slug);
+    if (!res.errors) {
+      dispatch({ type: 'LIKED', payload: res });
+    }
+  } else {
+    const res = await api.dislikeArticle(slug);
+    if (!res.errors) {
+      dispatch({ type: 'DISLIKED', payload: res });
+    }
   }
 };

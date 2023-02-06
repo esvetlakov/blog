@@ -2,12 +2,13 @@ import { connect } from 'react-redux';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
+import { LoadingOutlined } from '@ant-design/icons';
 import { Avatar, Tag, Spin } from 'antd';
-import { HeartOutlined, HeartFilled, LoadingOutlined } from '@ant-design/icons';
 import { uid } from 'uid/single';
 import ReactMarkdown from 'react-markdown';
 
-import { getCurrentArticle } from '../../redux/actions/actions';
+import LikeButton from '../../components/likeButton';
+import { getCurrentArticle, likeArticle } from '../../redux/actions/actions';
 
 import classes from './articlePage.module.scss';
 
@@ -27,22 +28,16 @@ const generateTagsList = (tags) =>
     </Tag>
   ));
 
-const heartIcon = (favorited) =>
-  favorited ? (
-    <HeartFilled style={{ fontsize: '16px', color: '#FF0707' }} />
-  ) : (
-    <HeartOutlined style={{ fontsize: '16px' }} />
-  );
-
-function ArticlePage({ currentArticle, getArticle }) {
+function ArticlePage({ data, getArticle, isAuth, likeClick }) {
   const { slug } = useParams();
+  const item = data[0];
 
   useEffect(() => {
     getArticle(slug);
   }, [getArticle, slug]);
 
-  if (Object.keys(currentArticle).length !== 0) {
-    const { title, description, createdAt, tagList, favorited, favoritesCount, author, body } = currentArticle;
+  if (data.single) {
+    const { title, description, createdAt, tagList, favorited, favoritesCount, author, body } = item;
     const { username, image } = author;
     return (
       <div className={classes.wrap}>
@@ -51,10 +46,13 @@ function ArticlePage({ currentArticle, getArticle }) {
             <div className={classes.mainInfo}>
               <div className={classes.header}>
                 <h2 className={classes.title}>{title}</h2>
-                <button className={classes.likeBtn} type="button">
-                  {heartIcon(favorited)}
-                  {favoritesCount}
-                </button>
+                <LikeButton
+                  favorited={favorited}
+                  favoritesCount={favoritesCount}
+                  isAuth={isAuth}
+                  likeClick={likeClick}
+                  slug={slug}
+                />
               </div>
               <div className={classes.tagList}>{generateTagsList(tagList)}</div>
               <p className={classes.desc}>{description}</p>
@@ -84,13 +82,15 @@ function ArticlePage({ currentArticle, getArticle }) {
 }
 
 const mapStateToProps = (state) => {
-  const { articles } = state;
-  const { currentArticle } = articles;
-  return { currentArticle };
+  const { articles, user } = state;
+  const { data } = articles;
+  const { isAuth } = user;
+  return { data, isAuth };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   getArticle: (slug) => dispatch(getCurrentArticle(slug)),
+  likeClick: (slug, checked) => dispatch(likeArticle(slug, checked)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ArticlePage);

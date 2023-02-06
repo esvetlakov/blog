@@ -2,7 +2,6 @@ const initialState = {
   data: [],
   articlesCount: 0,
   currentPage: 1,
-  currentArticle: {},
   loading: true,
 };
 
@@ -12,6 +11,7 @@ function articlesReducer(state = initialState, action = {}) {
   switch (type) {
     case 'LOAD_ARTICLES':
       newState.data = payload.articles;
+      newState.data.pages = true;
       newState.articlesCount = payload.articlesCount;
       newState.loading = false;
       break;
@@ -19,13 +19,30 @@ function articlesReducer(state = initialState, action = {}) {
       newState.currentPage = payload;
       break;
     case 'LOAD_CURRENT_ARTICLE':
-      newState.currentArticle = payload;
+      newState.data.push(payload);
+      newState.data.single = true;
       break;
     case 'CLEAR_CURRENT_ARTICLE':
-      newState.currentArticle = {};
+      newState.data = [];
       break;
     case 'LOADING':
       newState.loading = true;
+      break;
+    case 'LIKED':
+      newState.data.forEach((el, index) => {
+        if (el.slug === payload.article.slug) {
+          newState.data[index].favorited = true;
+          newState.data[index].favoritesCount = payload.article.favoritesCount;
+        }
+      });
+      break;
+    case 'DISLIKED':
+      newState.data.forEach((el, index) => {
+        if (el.slug === payload.article.slug) {
+          newState.data[index].favorited = false;
+          newState.data[index].favoritesCount = payload.article.favoritesCount;
+        }
+      });
       break;
     default:
       return state;

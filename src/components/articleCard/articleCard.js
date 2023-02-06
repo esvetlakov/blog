@@ -1,8 +1,9 @@
 import { format, parseISO } from 'date-fns';
 import { Avatar, Tag } from 'antd';
-import { HeartOutlined, HeartFilled } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { uid } from 'uid/single';
+
+import LikeButton from '../likeButton';
 
 import classes from './articleCard.module.scss';
 
@@ -13,14 +14,7 @@ const generateTagsList = (tags) =>
     </Tag>
   ));
 
-const heartIcon = (favorited) =>
-  favorited ? (
-    <HeartFilled style={{ fontsize: '16px', color: '#FF0707' }} />
-  ) : (
-    <HeartOutlined style={{ fontsize: '16px' }} />
-  );
-
-export default function ArticleCard({ article }) {
+export default function ArticleCard({ article, isAuth, likeClick }) {
   const { title, description, createdAt, tagList, favorited, favoritesCount, author, slug } = article;
   const { username, image } = author;
   return (
@@ -30,10 +24,13 @@ export default function ArticleCard({ article }) {
           <Link className={classes.title} to={`articles/${slug}`}>
             {title}
           </Link>
-          <button className={classes.likeBtn} type="button">
-            {heartIcon(favorited)}
-            {favoritesCount}
-          </button>
+          <LikeButton
+            favorited={favorited}
+            favoritesCount={favoritesCount}
+            isAuth={isAuth}
+            likeClick={likeClick}
+            slug={slug}
+          />
         </div>
         <div className={classes.tagList}>{generateTagsList(tagList)}</div>
         <p className={classes.desc}>{description}</p>
