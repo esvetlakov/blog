@@ -58,6 +58,27 @@ const loginUser = async (data) => {
   return null;
 };
 
+const updateUser = async (data) => {
+  const token = localStorage.getItem('token');
+  try {
+    const res = await _api
+      .put('user', {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+        json: data,
+      })
+      .json();
+    return res;
+  } catch (error) {
+    if (error.name === 'HTTPError') {
+      const errorJson = await error.response.json();
+      return errorJson;
+    }
+  }
+  return null;
+};
+
 const loadSavedUser = async (token) => {
   try {
     const res = await _api
@@ -80,6 +101,7 @@ const api = {
   createUser,
   loginUser,
   loadSavedUser,
+  updateUser,
 };
 
 export default api;

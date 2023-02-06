@@ -7,6 +7,7 @@ const initialState = {
   isAuth: false,
   regSuccess: false,
   loginSuccess: false,
+  profileSuccess: false,
   isPending: false,
   usernameErr: false,
   emailErr: false,
@@ -24,6 +25,10 @@ function userReducer(state = initialState, action = {}) {
       newState.loginErr = false;
       newState.regSuccess = false;
       newState.loginSuccess = false;
+      break;
+    case 'IS_PENDING':
+      newState.isPending = true;
+      newState.profileSuccess = false;
       break;
     case 'REGISTRATION_FAILED':
       newState.isPending = false;
@@ -45,12 +50,28 @@ function userReducer(state = initialState, action = {}) {
       newState.loginErr = payload.errors['email or password'] ? true : false;
       break;
     case 'LOGIN_SUCCESS':
+      newState.isPending = false;
       newState.username = payload.user.username;
       newState.email = payload.user.email;
       newState.token = payload.user.token;
       newState.image = payload.user.image;
       newState.isAuth = true;
       newState.loginSuccess = true;
+      break;
+    case 'PROFILE_FAILED':
+      newState.isPending = false;
+      // eslint-disable-next-line
+      newState.usernameErr = payload.errors.username ? true : false;
+      // eslint-disable-next-line
+      newState.emailErr = payload.errors.email ? true : false;
+      break;
+    case 'PROFILE_SUCCESS':
+      newState.isPending = false;
+      newState.username = payload.user.username;
+      newState.email = payload.user.email;
+      newState.token = payload.user.token;
+      newState.image = payload.user.image;
+      newState.profileSuccess = true;
       break;
     case 'LOGOUT':
       newState.username = '';

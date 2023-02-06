@@ -5,15 +5,16 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import Header from '../header';
-import ArticlesPage from '../articlesPage';
-import ArticlePage from '../articlePage';
-import SignupPage from '../signupPage';
-import SignInPage from '../signInPage/signInPage';
+import ArticlesPage from '../../pages/articlesPage';
+import ArticlePage from '../../pages/articlePage';
+import SignupPage from '../../pages/signupPage';
+import SignInPage from '../../pages/signInPage';
+import ProfilePage from '../../pages/profilePage';
 import RequireAuth from '../../hoc/requireAuth';
 import { loadSavedUser } from '../../redux/actions/actions';
 
 function App({ user, loadUser }) {
-  const { regSuccess, loginSuccess } = user;
+  const { regSuccess, loginSuccess, profileSuccess } = user;
 
   useEffect(() => {
     loadUser();
@@ -26,7 +27,10 @@ function App({ user, loadUser }) {
     if (loginSuccess) {
       toast.success('Successful login', { delay: 100, toastId: 'login' });
     }
-  }, [regSuccess, loginSuccess]);
+    if (profileSuccess) {
+      toast.success('Successful profile update', { delay: 100, toastId: 'profile' });
+    }
+  }, [regSuccess, loginSuccess, profileSuccess]);
 
   return (
     <div className="app">
@@ -49,6 +53,14 @@ function App({ user, loadUser }) {
             element={
               <RequireAuth page="login">
                 <SignInPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="profile"
+            element={
+              <RequireAuth page="profile">
+                <ProfilePage />
               </RequireAuth>
             }
           />

@@ -5,7 +5,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { uid } from 'uid/single';
 
 import { loadArticles, changeCurrentPage } from '../../redux/actions/actions';
-import ArticleCard from '../articleCard';
+import ArticleCard from '../../components/articleCard';
 
 import classes from './articlesPage.module.scss';
 

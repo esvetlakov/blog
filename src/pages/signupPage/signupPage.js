@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 
-import { createUser, testCreateUser } from '../../redux/actions/actions';
+import { createUser } from '../../redux/actions/actions';
 
 import classes from './signupPage.module.scss';
 
@@ -38,7 +38,7 @@ function SignupPage({ user, create, test }) {
 
   // change to prod fn
   const onSubmit = ({ username: name, email: mail, password: pwd }) => {
-    test({ user: { username: name, email: mail.toLowerCase(), password: pwd } });
+    create({ user: { username: name, email: mail.toLowerCase(), password: pwd } });
   };
 
   return (
@@ -158,7 +158,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   create: (data) => dispatch(createUser(data)),
-  test: (data) => dispatch(testCreateUser(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignupPage);

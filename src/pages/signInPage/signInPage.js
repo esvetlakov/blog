@@ -71,7 +71,7 @@ function SignInPage({ user, login }) {
             </div>
           </label>
 
-          <input type="submit" className={classes.submit} value="Create" />
+          <input type="submit" className={classes.submit} value="Login" />
           <div className={classes.signin}>
             Already have an account?{' '}
             <Link to="/signin" className={classes.link}>

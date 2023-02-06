@@ -9,7 +9,7 @@ import classes from './articleCard.module.scss';
 const generateTagsList = (tags) =>
   tags.map((el) => (
     <Tag className={classes.tag} key={uid(20)}>
-      {el.split('').splice(0, 40).join('')}
+      {el.slice(0, 40)}
     </Tag>
   ));
 

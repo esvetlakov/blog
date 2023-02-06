@@ -55,15 +55,13 @@ export const loadSavedUser = () => async (dispatch) => {
   }
 };
 
-export const testCreateUser = (data) => async (dispatch) => {
-  dispatch({ type: 'REG_STARTED' });
-  console.log(data);
-  const res = {
-    user: {
-      username: data.user.username,
-      email: data.user.email,
-      token: 'kdfdfgg45io2f2f',
-    },
-  };
-  dispatch({ type: 'TEST_USER_CREATE', payload: res });
+export const updateUser = (data) => async (dispatch) => {
+  dispatch({ type: 'IS_PENDING' });
+  const res = await api.updateUser(data);
+  if (res.errors) {
+    dispatch({ type: 'PROFILE_FAILED', payload: res });
+  } else {
+    storage.saveTokenToStorage(res.user.token);
+    dispatch({ type: 'PROFILE_SUCCESS', payload: res });
+  }
 };
