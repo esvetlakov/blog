@@ -1,8 +1,7 @@
 const initialState = {
   username: '',
   email: '',
-  token:
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZGZiMjNhNmY4YmVlMWIwMDU1MWQzNiIsInVzZXJuYW1lIjoidGVzdGFjYyIsImV4cCI6MTY4MDgwOTU0MiwiaWF0IjoxNjc1NjI1NTQyfQ.QE0CUD2u-poQN1sw1kD81HQf1UYlj0dQmIO3QstgYTE',
+  token: '',
   image: '',
   isAuth: false,
   regSuccess: false,
