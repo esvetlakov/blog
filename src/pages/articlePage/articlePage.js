@@ -1,14 +1,14 @@
 import { connect } from 'react-redux';
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import { LoadingOutlined } from '@ant-design/icons';
-import { Avatar, Tag, Spin } from 'antd';
+import { Avatar, Tag, Spin, Button, Popconfirm } from 'antd';
 import { uid } from 'uid/single';
 import ReactMarkdown from 'react-markdown';
 
 import LikeButton from '../../components/likeButton';
-import { getCurrentArticle, likeArticle } from '../../redux/actions/actions';
+import { getCurrentArticle, likeArticle, deleteArticle } from '../../redux/actions/actions';
 
 import classes from './articlePage.module.scss';
 
@@ -28,17 +28,25 @@ const generateTagsList = (tags) =>
     </Tag>
   ));
 
-function ArticlePage({ data, getArticle, isAuth, likeClick }) {
+function ArticlePage({ data, getArticle, isAuth, likeClick, username, deleteArt }) {
   const { slug } = useParams();
   const item = data[0];
+  const navigate = useNavigate();
 
   useEffect(() => {
     getArticle(slug);
   }, [getArticle, slug]);
 
+  const onDelete = async () => {
+    const res = await deleteArt(slug);
+    if (res) {
+      navigate('/');
+    }
+  };
+
   if (data.single) {
     const { title, description, createdAt, tagList, favorited, favoritesCount, author, body } = item;
-    const { username, image } = author;
+    const { username: authorName, image } = author;
     return (
       <div className={classes.wrap}>
         <div className={classes.card}>
@@ -58,13 +66,34 @@ function ArticlePage({ data, getArticle, isAuth, likeClick }) {
               <p className={classes.desc}>{description}</p>
             </div>
             <div className={classes.author}>
-              <div className={classes.info}>
-                <span className={classes.userName}>{username}</span>
-                <span className={classes.date}>{format(parseISO(createdAt), 'MMMM d, R')}</span>
+              <div className={classes.authorWrap}>
+                <div className={classes.info}>
+                  <span className={classes.userName}>{authorName}</span>
+                  <span className={classes.date}>{format(parseISO(createdAt), 'MMMM d, R')}</span>
+                </div>
+                <div className={classes.avatar}>
+                  <Avatar src={image} size={46} />
+                </div>
               </div>
-              <div className={classes.avatar}>
-                <Avatar src={image} size={46} />
-              </div>
+              {username === authorName && (
+                <div className={classes.authorWrap}>
+                  <Popconfirm
+                    placement="rightTop"
+                    title="Delete the article"
+                    description="Are you sure to delete this article?"
+                    onConfirm={onDelete}
+                    okText="Yes"
+                    cancelText="No"
+                  >
+                    <Button className={classes.delete} size="middle">
+                      Delete
+                    </Button>
+                  </Popconfirm>
+                  <Button className={classes.edit} size="middle" onClick={() => navigate(`/aricles/${slug}/edit`)}>
+                    Edit
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
           <div className={classes.mainText}>
@@ -84,13 +113,14 @@ function ArticlePage({ data, getArticle, isAuth, likeClick }) {
 const mapStateToProps = (state) => {
   const { articles, user } = state;
   const { data } = articles;
-  const { isAuth } = user;
-  return { data, isAuth };
+  const { isAuth, username } = user;
+  return { data, isAuth, username };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   getArticle: (slug) => dispatch(getCurrentArticle(slug)),
   likeClick: (slug, checked) => dispatch(likeArticle(slug, checked)),
+  deleteArt: (slug) => dispatch(deleteArticle(slug)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ArticlePage);

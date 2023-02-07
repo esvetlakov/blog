@@ -42,10 +42,18 @@
   border-color: rgba(0, 0, 0, 0.85);
 }
 
+.logout:hover {
+  outline: auto;
+}
+
 .greenBtn {
   margin-left: 19px;
   border-color: $success-color;
   color: $success-color;
+}
+
+.greenBtn:hover {
+  outline: auto;
 }
 
 .user {

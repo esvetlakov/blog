@@ -80,3 +80,23 @@ export const likeArticle = (slug, checked) => async (dispatch) => {
     }
   }
 };
+
+export const createArticle = (data) => async (dispatch) => {
+  dispatch({ type: 'CREATE_ARTICLE_STARTED' });
+  const res = await api.createArticle(data);
+  if (!res.errors) {
+    dispatch({ type: 'CREATE_ARTICLE_SUCCESS' });
+    return res;
+  }
+  return false;
+};
+
+export const deleteArticle = (slug) => async (dispatch) => {
+  dispatch({ type: 'DELETE_START' });
+  const res = await api.deleteArticle(slug);
+  if (res) {
+    dispatch({ type: 'DELETE_SUCCESS' });
+    return true;
+  }
+  return false;
+};

@@ -1,4 +1,5 @@
 /* eslint no-underscore-dangle: 0 */
+/* eslint no-console: ["error", { allow: ["log"] }] */
 // import { uid } from 'uid/single';
 import ky from 'ky';
 
@@ -124,6 +125,39 @@ const dislikeArticle = async (slug) => {
   return null;
 };
 
+const createArticle = async (data) => {
+  const token = localStorage.getItem('token');
+  try {
+    const res = await _api
+      .post('articles', {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+        json: data,
+      })
+      .json();
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+  return null;
+};
+
+const deleteArticle = async (slug) => {
+  const token = localStorage.getItem('token');
+  try {
+    const res = await _api.delete(`articles/${slug}`, {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    });
+    return res.ok;
+  } catch (error) {
+    console.log(error);
+  }
+  return null;
+};
+
 const loadSavedUser = async (token) => {
   try {
     const res = await _api
@@ -149,6 +183,8 @@ const api = {
   updateUser,
   likeArticle,
   dislikeArticle,
+  createArticle,
+  deleteArticle,
 };
 
 export default api;

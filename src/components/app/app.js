@@ -1,7 +1,8 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
+import { Button, Result } from 'antd';
 import 'react-toastify/dist/ReactToastify.css';
 
 import Header from '../header';
@@ -10,11 +11,13 @@ import ArticlePage from '../../pages/articlePage';
 import SignupPage from '../../pages/signupPage';
 import SignInPage from '../../pages/signInPage';
 import ProfilePage from '../../pages/profilePage';
+import NewArticle from '../../pages/newArticle';
 import RequireAuth from '../../hoc/requireAuth';
 import { loadSavedUser } from '../../redux/actions/actions';
 
-function App({ user, loadUser }) {
+function App({ user, loadUser, articles }) {
   const { regSuccess, loginSuccess, profileSuccess } = user;
+  const { createSuccess, deleteSuccess } = articles;
 
   useEffect(() => {
     loadUser();
@@ -30,7 +33,13 @@ function App({ user, loadUser }) {
     if (profileSuccess) {
       toast.success('Successful profile update', { delay: 100, toastId: 'profile' });
     }
-  }, [regSuccess, loginSuccess, profileSuccess]);
+    if (createSuccess) {
+      toast.success('New article successfully created', { delay: 100, toastId: 'new-article' });
+    }
+    if (deleteSuccess) {
+      toast.success('Article successfully deleted', { delay: 100, toastId: 'delete' });
+    }
+  }, [regSuccess, loginSuccess, profileSuccess, createSuccess, deleteSuccess]);
 
   return (
     <div className="app">
@@ -38,6 +47,22 @@ function App({ user, loadUser }) {
         <Header />
         <Routes>
           <Route path="" element={<ArticlesPage />} />
+          <Route
+            path="*"
+            element={
+              <Result
+                style={{ paddingTop: '140px' }}
+                status="404"
+                title="404"
+                subTitle="Sorry, the page you visited does not exist."
+                extra={
+                  <Link to="/">
+                    <Button type="primary">Back Home</Button>
+                  </Link>
+                }
+              />
+            }
+          />
           <Route path="articles" element={<ArticlesPage />} />
           <Route path="articles/:slug" element={<ArticlePage />} />
           <Route
@@ -64,6 +89,14 @@ function App({ user, loadUser }) {
               </RequireAuth>
             }
           />
+          <Route
+            path="new-article"
+            element={
+              <RequireAuth page="new-article">
+                <NewArticle />
+              </RequireAuth>
+            }
+          />
         </Routes>
       </Router>
       <ToastContainer
@@ -81,8 +114,8 @@ function App({ user, loadUser }) {
 }
 
 const mapStateToProps = (state) => {
-  const { user } = state;
-  return { user };
+  const { user, articles } = state;
+  return { user, articles };
 };
 
 const mapDispatchToProps = (dispatch) => ({

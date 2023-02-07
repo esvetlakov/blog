@@ -48,18 +48,6 @@
   max-width: 600px;
 }
 
-.likeBtn {
-  padding: 4px;
-  padding-top: 6px;
-  border: none;
-  background-color: white;
-  cursor: pointer;
-
-  display: flex;
-  gap: 5px;
-  align-self: center;
-}
-
 .tagList {
   width: 680px;
   margin-top: 4px;
@@ -74,7 +62,40 @@
 
 .author {
   display: flex;
+  flex-direction: column;
+  gap: 10px
+}
+
+.authorWrap {
+  display: flex;
   flex-direction: row;
+  justify-content: space-between;
+}
+
+.delete {
+  width: 85px;
+  color: rgba(245, 34, 45, 1);
+  border: 1px solid rgba(245, 34, 45, 1);
+  cursor: pointer;
+}
+
+.delete:hover {
+  color: rgba(245, 34, 45, 1) !important;
+  border: 1px solid rgba(245, 34, 45, 1) !important;
+  outline: auto;
+}
+
+.edit {
+  width: 60px;
+  border-color: $success-color;
+  color: $success-color;
+  cursor: pointer;
+}
+
+.edit:hover {
+  border-color: $success-color !important;
+  color: $success-color !important;
+  outline: auto;
 }
 
 .info {

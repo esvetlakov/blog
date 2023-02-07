@@ -24,6 +24,11 @@ function ProfilePage({ user, update }) {
     handleSubmit,
   } = useForm({
     mode: 'onBlur',
+    defaultValues: {
+      newUsername: oldName,
+      newEmail: oldMail,
+      newAvatar: oldImage,
+    },
   });
 
   const onSubmit = ({ newUsername, newEmail, newPassword, newAvatar }) => {
@@ -49,7 +54,6 @@ function ProfilePage({ user, update }) {
             <input
               type="text"
               placeholder="Username"
-              defaultValue={oldName}
               {...register('newUsername', {
                 minLength: {
                   value: 3,
@@ -72,7 +76,7 @@ function ProfilePage({ user, update }) {
           </label>
           <label className={!errors.newEmail ? classes.label : `${classes.label} ${classes.err}`}>
             Email
-            <input type="email" placeholder="Email address" defaultValue={oldMail} {...register('newEmail')} />
+            <input type="email" placeholder="Email address" {...register('newEmail')} />
             <div className={classes.errMsg}>
               {errors?.newEmail && <span>{errors?.newEmail?.message || 'Error'}</span>}
               {emailErr ? <span>Email is already taken</span> : null}
@@ -100,7 +104,7 @@ function ProfilePage({ user, update }) {
           </label>
           <label className={classes.label}>
             Avatar image(url)
-            <input type="url" placeholder="Image url" defaultValue={oldImage} {...register('newAvatar')} />
+            <input type="url" placeholder="Image url" {...register('newAvatar')} />
           </label>
 
           <input type="submit" className={classes.submit} value="Save" />

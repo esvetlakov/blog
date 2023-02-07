@@ -39,14 +39,14 @@ function Header({ user, logout }) {
       return (
         <>
           <Link to="new-article">
-            <Button type="new-article" size="small" ghost className={classes.greenBtn}>
+            <Button type="new-article" size="small" className={classes.greenBtn}>
               Create Article
             </Button>
           </Link>
           <Link to="profile" className={classes.user}>
             {loading()}
           </Link>
-          <Button type="logout" size="large" ghost className={classes.logout} onClick={onClickLogout}>
+          <Button type="logout" size="large" className={classes.logout} onClick={onClickLogout}>
             Log out
           </Button>
         </>
@@ -56,12 +56,12 @@ function Header({ user, logout }) {
     return (
       <>
         <Link to="/signin">
-          <Button type="signin" size="large" ghost className={classes.signin}>
+          <Button type="signin" size="large" className={classes.signin}>
             Sign In
           </Button>
         </Link>
         <Link to="/signup">
-          <Button type="signup" size="large" ghost className={classes.greenBtn}>
+          <Button type="signup" size="large" className={classes.greenBtn}>
             Sign Up
           </Button>
         </Link>
