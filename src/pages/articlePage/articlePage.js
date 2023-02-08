@@ -110,7 +110,7 @@ function ArticlePage({ data, getArticle, isAuth, likeClick, username, deleteArt 
   }
   return (
     <div className={classes.loading}>
-      <Spin indicator={antIcon} tip="Loading..." />
+      <Spin indicator={antIcon} />
     </div>
   );
 }

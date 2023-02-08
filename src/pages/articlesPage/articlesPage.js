@@ -23,10 +23,6 @@ function ArticlesPage({ getArticles, changePage, articles, user, likeClick }) {
   const { token, isAuth } = user;
 
   useEffect(() => {
-    window.scrollTo({ top: 0 });
-  }, []);
-
-  useEffect(() => {
     const offset = (currentPage - 1) * 20;
     getArticles(offset, token);
   }, [getArticles, currentPage, token]);
@@ -47,8 +43,8 @@ function ArticlesPage({ getArticles, changePage, articles, user, likeClick }) {
   };
 
   return (
-    <div className={classes.wrapper}>
-      <Spin indicator={antIcon} tip="Loading..." spinning={loading}>
+    <div className={loading ? classes.loading : classes.wrapper}>
+      <Spin indicator={antIcon} spinning={loading}>
         {createArticlesCards()}
       </Spin>
       <Pagination
