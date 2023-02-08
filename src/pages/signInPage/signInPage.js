@@ -31,7 +31,7 @@ function SignInPage({ user, login }) {
 
   useEffect(() => {
     if (loginSuccess) {
-      navigate('/');
+      navigate(-1);
     }
   }, [loginSuccess, navigate]);
 

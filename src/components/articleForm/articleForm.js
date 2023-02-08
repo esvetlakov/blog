@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import classes from './articleForm.module.scss';
 
-export default function ArticleForm({ type, send }) {
+export default function ArticleForm({ type, send, oldTitle, oldDesc, oldBody, oldTags, slug }) {
   const {
     register,
     formState: { errors },
@@ -13,6 +13,12 @@ export default function ArticleForm({ type, send }) {
     getValues,
   } = useForm({
     mode: 'onBlur',
+    defaultValues: {
+      title: oldTitle,
+      desc: oldDesc,
+      text: oldBody,
+      tags: oldTags,
+    },
   });
 
   const navigate = useNavigate();
@@ -20,10 +26,13 @@ export default function ArticleForm({ type, send }) {
   const { fields, append, remove } = useFieldArray({ name: 'tags', control });
 
   const onSubmit = async ({ title, desc, text, tags }) => {
-    const resp = await send({
-      // eslint-disable-next-line
-      article: { title: title, description: desc, body: text, tagList: tags.map((el) => el.name) },
-    });
+    const resp = await send(
+      {
+        // eslint-disable-next-line
+        article: { title: title, description: desc, body: text, tagList: tags.map((el) => el.name) },
+      },
+      slug
+    );
     if (resp.article) {
       navigate(`/articles/${resp.article.slug}`);
     }

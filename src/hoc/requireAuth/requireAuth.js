@@ -1,16 +1,13 @@
 import { connect } from 'react-redux';
 import { Navigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 
 function RequireAuth({ children, user, page }) {
   const { isAuth, regSuccess, loginSuccess } = user;
 
   if (page === 'reg' && isAuth && regSuccess !== true) {
-    toast.error('You are already logged in', { delay: 20 });
     return <Navigate to="/" />;
     // eslint-disable-next-line
   } else if (page === 'login' && isAuth && loginSuccess !== true) {
-    toast.error('You are already logged in', { delay: 20 });
     return <Navigate to="/" />;
   } else if ((page === 'profile' || page === 'new-article') && !isAuth) {
     return <Navigate to="/" />;

@@ -1,6 +1,7 @@
 /* eslint no-unneeded-ternary: "error" */
 
 import { Button, Avatar, Skeleton } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -29,7 +30,7 @@ function Header({ user, logout }) {
     return (
       <>
         <span className={classes.username}>{username}</span>
-        <Avatar size="large" src={image ? image : 'https://static.productionready.io/images/smiley-cyrus.jpg'} />
+        <Avatar size={46} src={image} icon={<UserOutlined />} />
       </>
     );
   };

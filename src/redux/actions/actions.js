@@ -19,6 +19,7 @@ export const changeCurrentPage = (page) => (dispatch) => {
 };
 
 export const createUser = (data) => async (dispatch) => {
+  dispatch({ type: 'ARTICLE_STARTED' });
   dispatch({ type: 'REG_STARTED' });
   storage.clearStorage();
   const res = await api.createUser(data);
@@ -31,6 +32,7 @@ export const createUser = (data) => async (dispatch) => {
 };
 
 export const loginUser = (data) => async (dispatch) => {
+  dispatch({ type: 'ARTICLE_STARTED' });
   dispatch({ type: 'REG_STARTED' });
   storage.clearStorage();
   const res = await api.loginUser(data);
@@ -82,7 +84,7 @@ export const likeArticle = (slug, checked) => async (dispatch) => {
 };
 
 export const createArticle = (data) => async (dispatch) => {
-  dispatch({ type: 'CREATE_ARTICLE_STARTED' });
+  dispatch({ type: 'ARTICLE_STARTED' });
   const res = await api.createArticle(data);
   if (!res.errors) {
     dispatch({ type: 'CREATE_ARTICLE_SUCCESS' });
@@ -91,8 +93,18 @@ export const createArticle = (data) => async (dispatch) => {
   return false;
 };
 
+export const updateArticle = (data, slug) => async (dispatch) => {
+  dispatch({ type: 'ARTICLE_STARTED' });
+  const res = await api.updateArticle(data, slug);
+  if (!res.errors) {
+    dispatch({ type: 'EDIT_ARTICLE_SUCCESS' });
+    return res;
+  }
+  return false;
+};
+
 export const deleteArticle = (slug) => async (dispatch) => {
-  dispatch({ type: 'DELETE_START' });
+  dispatch({ type: 'ARTICLE_STARTED' });
   const res = await api.deleteArticle(slug);
   if (res) {
     dispatch({ type: 'DELETE_SUCCESS' });

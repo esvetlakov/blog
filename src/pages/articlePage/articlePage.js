@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
-import { LoadingOutlined } from '@ant-design/icons';
+import { LoadingOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Tag, Spin, Button, Popconfirm } from 'antd';
 import { uid } from 'uid/single';
 import ReactMarkdown from 'react-markdown';
@@ -22,11 +22,16 @@ const antIcon = (
 );
 
 const generateTagsList = (tags) =>
-  tags.map((el) => (
-    <Tag className={classes.tag} key={uid(20)}>
-      {el.slice(0, 40)}
-    </Tag>
-  ));
+  tags.map((el) => {
+    if (el !== '') {
+      return (
+        <Tag className={classes.tag} key={uid(20)}>
+          {el.slice(0, 40)}
+        </Tag>
+      );
+    }
+    return null;
+  });
 
 function ArticlePage({ data, getArticle, isAuth, likeClick, username, deleteArt }) {
   const { slug } = useParams();
@@ -72,7 +77,7 @@ function ArticlePage({ data, getArticle, isAuth, likeClick, username, deleteArt 
                   <span className={classes.date}>{format(parseISO(createdAt), 'MMMM d, R')}</span>
                 </div>
                 <div className={classes.avatar}>
-                  <Avatar src={image} size={46} />
+                  <Avatar src={image} size={46} icon={<UserOutlined />} />
                 </div>
               </div>
               {username === authorName && (
@@ -89,7 +94,7 @@ function ArticlePage({ data, getArticle, isAuth, likeClick, username, deleteArt 
                       Delete
                     </Button>
                   </Popconfirm>
-                  <Button className={classes.edit} size="middle" onClick={() => navigate(`/aricles/${slug}/edit`)}>
+                  <Button className={classes.edit} size="middle" onClick={() => navigate(`/articles/${slug}/edit`)}>
                     Edit
                   </Button>
                 </div>
