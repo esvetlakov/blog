@@ -12,12 +12,13 @@ import SignupPage from '../../pages/signupPage';
 import SignInPage from '../../pages/signInPage';
 import ProfilePage from '../../pages/profilePage';
 import NewArticle from '../../pages/newArticle';
+import EditArticle from '../../pages/editArticle';
 import RequireAuth from '../../hoc/requireAuth';
 import { loadSavedUser } from '../../redux/actions/actions';
 
 function App({ user, loadUser, articles }) {
   const { regSuccess, loginSuccess, profileSuccess } = user;
-  const { createSuccess, deleteSuccess } = articles;
+  const { createSuccess, deleteSuccess, editSuccess } = articles;
 
   useEffect(() => {
     loadUser();
@@ -31,15 +32,18 @@ function App({ user, loadUser, articles }) {
       toast.success('Successful login', { delay: 100, toastId: 'login' });
     }
     if (profileSuccess) {
-      toast.success('Successful profile update', { delay: 100, toastId: 'profile' });
+      toast.success('Successful profile update', { delay: 100 });
     }
     if (createSuccess) {
-      toast.success('New article successfully created', { delay: 100, toastId: 'new-article' });
+      toast.success('New article successfully created', { delay: 100 });
+    }
+    if (editSuccess) {
+      toast.success('Article edited successfully', { delay: 100 });
     }
     if (deleteSuccess) {
-      toast.success('Article successfully deleted', { delay: 100, toastId: 'delete' });
+      toast.success('Article successfully deleted', { delay: 100 });
     }
-  }, [regSuccess, loginSuccess, profileSuccess, createSuccess, deleteSuccess]);
+  }, [regSuccess, loginSuccess, profileSuccess, createSuccess, deleteSuccess, editSuccess]);
 
   return (
     <div className="app">
@@ -57,7 +61,7 @@ function App({ user, loadUser, articles }) {
                 subTitle="Sorry, the page you visited does not exist."
                 extra={
                   <Link to="/">
-                    <Button type="primary">Back Home</Button>
+                    <Button type="primary">Back to main page</Button>
                   </Link>
                 }
               />
@@ -65,6 +69,7 @@ function App({ user, loadUser, articles }) {
           />
           <Route path="articles" element={<ArticlesPage />} />
           <Route path="articles/:slug" element={<ArticlePage />} />
+          <Route path="articles/:slug/edit" element={<EditArticle />} />
           <Route
             path="signup"
             element={

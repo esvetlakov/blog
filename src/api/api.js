@@ -146,6 +146,24 @@ const createArticle = async (data) => {
   return null;
 };
 
+const updateArticle = async (data, slug) => {
+  const token = localStorage.getItem('token');
+  try {
+    const res = await _api
+      .put(`articles/${slug}`, {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+        json: data,
+      })
+      .json();
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+  return null;
+};
+
 const deleteArticle = async (slug) => {
   const token = storage.loadTokenFromStorage();
   try {
@@ -188,6 +206,7 @@ const api = {
   dislikeArticle,
   createArticle,
   deleteArticle,
+  updateArticle,
 };
 
 export default api;

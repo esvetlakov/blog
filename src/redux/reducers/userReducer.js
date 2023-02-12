@@ -72,6 +72,10 @@ function userReducer(state = initialState, action = {}) {
       newState.image = payload.user.image;
       newState.profileSuccess = true;
       break;
+    case 'ARTICLE_STARTED':
+      newState.regSuccess = false;
+      newState.loginSuccess = false;
+      break;
     case 'LOGOUT':
       newState.username = '';
       newState.email = '';

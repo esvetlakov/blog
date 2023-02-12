@@ -5,6 +5,7 @@ const initialState = {
   loading: true,
   createSuccess: false,
   deleteSuccess: false,
+  editSuccess: false,
 };
 
 function articlesReducer(state = initialState, action = {}) {
@@ -46,14 +47,16 @@ function articlesReducer(state = initialState, action = {}) {
         }
       });
       break;
-    case 'CREATE_ARTICLE_STARTED':
-      newState.createSuccess = false;
-      break;
     case 'CREATE_ARTICLE_SUCCESS':
       newState.createSuccess = true;
       break;
-    case 'DELETE_START':
+    case 'ARTICLE_STARTED':
       newState.deleteSuccess = false;
+      newState.createSuccess = false;
+      newState.editSuccess = false;
+      break;
+    case 'EDIT_ARTICLE_SUCCESS':
+      newState.editSuccess = true;
       break;
     case 'DELETE_SUCCESS':
       newState.deleteSuccess = true;

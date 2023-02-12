@@ -23,7 +23,7 @@
 }
 
 .header {
-  width: 680px;
+  width: 660px;
   display: flex;
   flex-direction: row;
   gap: 13px;
@@ -40,13 +40,15 @@
 }
 
 .tagList {
-  width: 680px;
+  width: 660px;
   margin-top: 4px;
 }
 
 .desc {
-  width: 680px;
+  width: 660px;
   font-size: 12px;
+  max-height: 30px;
+  overflow-y: hidden;
   overflow-wrap: break-word;
   color: $text-color-primary;
 }
