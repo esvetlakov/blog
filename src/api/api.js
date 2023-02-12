@@ -3,9 +3,12 @@
 // import { uid } from 'uid/single';
 import ky from 'ky';
 
+import storage from './storage';
+
 const _api = ky.create({ prefixUrl: 'https://blog.kata.academy/api' });
 
-const getArticles = async (offset, token) => {
+const getArticles = async (offset) => {
+  const token = storage.loadTokenFromStorage();
   try {
     const res = await _api
       .get(`articles?offset=${offset}`, {
@@ -23,7 +26,7 @@ const getArticles = async (offset, token) => {
 };
 
 const getArticleBySlug = async (slug) => {
-  const token = localStorage.getItem('token');
+  const token = storage.loadTokenFromStorage();
   try {
     const res = await _api
       .get(`articles/${slug}`, {
@@ -67,7 +70,7 @@ const loginUser = async (data) => {
 };
 
 const updateUser = async (data) => {
-  const token = localStorage.getItem('token');
+  const token = storage.loadTokenFromStorage();
   try {
     const res = await _api
       .put('user', {
@@ -88,7 +91,7 @@ const updateUser = async (data) => {
 };
 
 const likeArticle = async (slug) => {
-  const token = localStorage.getItem('token');
+  const token = storage.loadTokenFromStorage();
   try {
     const res = await _api
       .post(`articles/${slug}/favorite`, {
@@ -107,7 +110,7 @@ const likeArticle = async (slug) => {
 };
 
 const dislikeArticle = async (slug) => {
-  const token = localStorage.getItem('token');
+  const token = storage.loadTokenFromStorage();
   try {
     const res = await _api
       .delete(`articles/${slug}/favorite`, {
@@ -126,7 +129,7 @@ const dislikeArticle = async (slug) => {
 };
 
 const createArticle = async (data) => {
-  const token = localStorage.getItem('token');
+  const token = storage.loadTokenFromStorage();
   try {
     const res = await _api
       .post('articles', {
@@ -144,7 +147,7 @@ const createArticle = async (data) => {
 };
 
 const deleteArticle = async (slug) => {
-  const token = localStorage.getItem('token');
+  const token = storage.loadTokenFromStorage();
   try {
     const res = await _api.delete(`articles/${slug}`, {
       headers: {

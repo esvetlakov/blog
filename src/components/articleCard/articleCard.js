@@ -22,7 +22,7 @@ export default function ArticleCard({ article, isAuth, likeClick }) {
       <div className={classes.mainInfo}>
         <div className={classes.header}>
           <Link className={classes.title} to={`articles/${slug}`}>
-            {title}
+            {title.length > 55 ? `${title.slice(0, 55)}...` : title}
           </Link>
           <LikeButton
             favorited={favorited}
@@ -33,7 +33,7 @@ export default function ArticleCard({ article, isAuth, likeClick }) {
           />
         </div>
         <div className={classes.tagList}>{generateTagsList(tagList)}</div>
-        <p className={classes.desc}>{description}</p>
+        <p className={classes.desc}>{description.length > 300 ? `${description.slice(0, 300)}...` : description}</p>
       </div>
       <div className={classes.author}>
         <div className={classes.info}>

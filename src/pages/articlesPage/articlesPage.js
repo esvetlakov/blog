@@ -20,7 +20,7 @@ const antIcon = (
 
 function ArticlesPage({ getArticles, changePage, articles, user, likeClick }) {
   const { data, articlesCount, currentPage, loading } = articles;
-  const { token, isAuth } = user;
+  const { isAuth } = user;
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
@@ -28,8 +28,8 @@ function ArticlesPage({ getArticles, changePage, articles, user, likeClick }) {
 
   useEffect(() => {
     const offset = (currentPage - 1) * 20;
-    getArticles(offset, token);
-  }, [getArticles, currentPage, token]);
+    getArticles(offset);
+  }, [getArticles, currentPage]);
 
   const createArticlesCards = () => {
     if (!data.pages) {
@@ -41,7 +41,7 @@ function ArticlesPage({ getArticles, changePage, articles, user, likeClick }) {
 
   const onChange = (e) => {
     const offset = (e - 1) * 20;
-    getArticles(offset, token);
+    getArticles(offset);
     changePage(e);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -69,7 +69,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  getArticles: (offset, token) => dispatch(loadArticles(offset, token)),
+  getArticles: (offset) => dispatch(loadArticles(offset)),
   changePage: (page) => dispatch(changeCurrentPage(page)),
   likeClick: (slug, checked) => dispatch(likeArticle(slug, checked)),
 });

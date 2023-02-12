@@ -1,10 +1,10 @@
 import api from '../../api/api';
 import storage from '../../api/storage';
 
-export const loadArticles = (offset, token) => async (dispatch) => {
+export const loadArticles = (offset) => async (dispatch) => {
   dispatch({ type: 'LOADING' });
   dispatch({ type: 'CLEAR_CURRENT_ARTICLE' });
-  const res = await api.getArticles(offset, token);
+  const res = await api.getArticles(offset);
   dispatch({ type: 'LOAD_ARTICLES', payload: res });
 };
 

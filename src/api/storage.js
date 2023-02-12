@@ -4,8 +4,6 @@ const saveTokenToStorage = (token) => {
   localStorage.setItem('tokenLifetime', tokenLifetime);
 };
 
-const loadTokenFromStorage = () => localStorage.getItem('token');
-
 const tokenCheck = () => {
   const token = localStorage.getItem('token');
   if (token !== null) {
@@ -17,6 +15,8 @@ const tokenCheck = () => {
   }
   return false;
 };
+
+const loadTokenFromStorage = () => (tokenCheck() ? localStorage.getItem('token') : null);
 
 const clearStorage = () => {
   localStorage.clear();
