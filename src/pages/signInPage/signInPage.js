@@ -35,7 +35,6 @@ function SignInPage({ user, login }) {
     }
   }, [loginSuccess, navigate]);
 
-  // change to prod fn
   const onSubmit = ({ email: mail, password: pwd }) => {
     login({ user: { email: mail.toLowerCase(), password: pwd } });
   };

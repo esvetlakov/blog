@@ -1,3 +1,5 @@
+import * as types from '../actions/actionTypes';
+
 const initialState = {
   username: '',
   email: '',
@@ -17,7 +19,7 @@ function userReducer(state = initialState, action = {}) {
   const { type, payload } = action;
   const newState = { ...state };
   switch (type) {
-    case 'REG_STARTED':
+    case types.REG_STARTED:
       newState.isPending = true;
       newState.usernameErr = false;
       newState.emailErr = false;
@@ -25,30 +27,27 @@ function userReducer(state = initialState, action = {}) {
       newState.regSuccess = false;
       newState.loginSuccess = false;
       break;
-    case 'IS_PENDING':
+    case types.IS_PENDING:
       newState.isPending = true;
       newState.profileSuccess = false;
       break;
-    case 'REGISTRATION_FAILED':
+    case types.REGISTRATION_FAILED:
       newState.isPending = false;
-      // eslint-disable-next-line
-      newState.usernameErr = payload.errors.username ? true : false;
-      // eslint-disable-next-line
-      newState.emailErr = payload.errors.email ? true : false;
+      newState.usernameErr = payload?.errors?.username;
+      newState.emailErr = payload?.errors?.email;
       break;
-    case 'REGISTRATION_SUCCESS':
+    case types.REGISTRATION_SUCCESS:
       newState.username = payload.user.username;
       newState.email = payload.user.email;
       newState.token = payload.user.token;
       newState.isAuth = true;
       newState.regSuccess = true;
       break;
-    case 'LOGIN_FAILED':
+    case types.LOGIN_FAILED:
       newState.isPending = false;
-      // eslint-disable-next-line
-      newState.loginErr = payload.errors['email or password'] ? true : false;
+      newState.loginErr = payload?.errors['email or password'];
       break;
-    case 'LOGIN_SUCCESS':
+    case types.LOGIN_SUCCESS:
       newState.isPending = false;
       newState.username = payload.user.username;
       newState.email = payload.user.email;
@@ -57,14 +56,12 @@ function userReducer(state = initialState, action = {}) {
       newState.isAuth = true;
       newState.loginSuccess = true;
       break;
-    case 'PROFILE_FAILED':
+    case types.PROFILE_FAILED:
       newState.isPending = false;
-      // eslint-disable-next-line
-      newState.usernameErr = payload.errors.username ? true : false;
-      // eslint-disable-next-line
-      newState.emailErr = payload.errors.email ? true : false;
+      newState.usernameErr = payload?.errors?.username;
+      newState.emailErr = payload.errors.email;
       break;
-    case 'PROFILE_SUCCESS':
+    case types.PROFILE_SUCCESS:
       newState.isPending = false;
       newState.username = payload.user.username;
       newState.email = payload.user.email;
@@ -72,11 +69,11 @@ function userReducer(state = initialState, action = {}) {
       newState.image = payload.user.image;
       newState.profileSuccess = true;
       break;
-    case 'ARTICLE_STARTED':
+    case types.ARTICLE_STARTED:
       newState.regSuccess = false;
       newState.loginSuccess = false;
       break;
-    case 'LOGOUT':
+    case types.LOGOUT:
       newState.username = '';
       newState.email = '';
       newState.image = '';
@@ -84,23 +81,15 @@ function userReducer(state = initialState, action = {}) {
       newState.isAuth = '';
       newState.loginSuccess = false;
       break;
-    case 'LOAD_SAVED_USER':
+    case types.LOAD_SAVED_USER:
       newState.username = payload.user.username;
       newState.email = payload.user.email;
       newState.token = payload.user.token;
       newState.image = payload.user.image;
       newState.isAuth = true;
       break;
-    case 'SAVED_USER_TRUE':
+    case types.SAVED_USER_TRUE:
       newState.isAuth = true;
-      break;
-    case 'TEST_USER_CREATE':
-      newState.isPending = false;
-      newState.username = payload.user.username;
-      newState.email = payload.user.email;
-      newState.token = payload.user.token;
-      newState.isAuth = true;
-      newState.regSuccess = true;
       break;
     default:
       return newState;

@@ -6,10 +6,11 @@ function RequireAuth({ children, user, page }) {
 
   if (page === 'reg' && isAuth && regSuccess !== true) {
     return <Navigate to="/" />;
-    // eslint-disable-next-line
-  } else if (page === 'login' && isAuth && loginSuccess !== true) {
+  }
+  if (page === 'login' && isAuth && loginSuccess !== true) {
     return <Navigate to="/" />;
-  } else if ((page === 'profile' || page === 'new-article') && !isAuth) {
+  }
+  if ((page === 'profile' || page === 'new-article') && !isAuth) {
     return <Navigate to="/" />;
   }
 

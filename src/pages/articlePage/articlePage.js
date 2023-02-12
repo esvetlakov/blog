@@ -3,12 +3,12 @@ import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import { LoadingOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Tag, Spin, Button, Popconfirm } from 'antd';
-import { uid } from 'uid/single';
+import { Avatar, Spin, Button, Popconfirm } from 'antd';
 import ReactMarkdown from 'react-markdown';
 
 import LikeButton from '../../components/likeButton';
 import { getCurrentArticle, likeArticle, deleteArticle } from '../../redux/actions/actions';
+import getTags from '../../utils/getTags';
 
 import classes from './articlePage.module.scss';
 
@@ -20,18 +20,6 @@ const antIcon = (
     spin
   />
 );
-
-const generateTagsList = (tags) =>
-  tags.map((el) => {
-    if (el !== '') {
-      return (
-        <Tag className={classes.tag} key={uid(20)}>
-          {el.slice(0, 40)}
-        </Tag>
-      );
-    }
-    return null;
-  });
 
 function ArticlePage({ data, getArticle, isAuth, likeClick, username, deleteArt }) {
   const { slug } = useParams();
@@ -67,7 +55,7 @@ function ArticlePage({ data, getArticle, isAuth, likeClick, username, deleteArt 
                   slug={slug}
                 />
               </div>
-              <div className={classes.tagList}>{generateTagsList(tagList)}</div>
+              <div className={classes.tagList}>{getTags(tagList, classes.tag)}</div>
               <p className={classes.desc}>{description}</p>
             </div>
             <div className={classes.author}>

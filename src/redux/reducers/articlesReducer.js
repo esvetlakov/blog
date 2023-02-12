@@ -1,3 +1,5 @@
+import * as types from '../actions/actionTypes';
+
 const initialState = {
   data: [],
   articlesCount: 0,
@@ -12,26 +14,26 @@ function articlesReducer(state = initialState, action = {}) {
   const { type, payload } = action;
   const newState = { ...state };
   switch (type) {
-    case 'LOAD_ARTICLES':
+    case types.LOAD_ARTICLES:
       newState.data = payload.articles;
       newState.data.pages = true;
       newState.articlesCount = payload.articlesCount;
       newState.loading = false;
       break;
-    case 'CHANGE_PAGE':
+    case types.CHANGE_PAGE:
       newState.currentPage = payload;
       break;
-    case 'LOAD_CURRENT_ARTICLE':
+    case types.LOAD_CURRENT_ARTICLE:
       newState.data.push(payload);
       newState.data.single = true;
       break;
-    case 'CLEAR_CURRENT_ARTICLE':
+    case types.CLEAR_CURRENT_ARTICLE:
       newState.data = [];
       break;
-    case 'LOADING':
+    case types.LOADING:
       newState.loading = true;
       break;
-    case 'LIKED':
+    case types.LIKED:
       newState.data.forEach((el, index) => {
         if (el.slug === payload.article.slug) {
           newState.data[index].favorited = true;
@@ -39,7 +41,7 @@ function articlesReducer(state = initialState, action = {}) {
         }
       });
       break;
-    case 'DISLIKED':
+    case types.DISLIKED:
       newState.data.forEach((el, index) => {
         if (el.slug === payload.article.slug) {
           newState.data[index].favorited = false;
@@ -47,18 +49,18 @@ function articlesReducer(state = initialState, action = {}) {
         }
       });
       break;
-    case 'CREATE_ARTICLE_SUCCESS':
+    case types.CREATE_ARTICLE_SUCCESS:
       newState.createSuccess = true;
       break;
-    case 'ARTICLE_STARTED':
+    case types.ARTICLE_STARTED:
       newState.deleteSuccess = false;
       newState.createSuccess = false;
       newState.editSuccess = false;
       break;
-    case 'EDIT_ARTICLE_SUCCESS':
+    case types.EDIT_ARTICLE_SUCCESS:
       newState.editSuccess = true;
       break;
-    case 'DELETE_SUCCESS':
+    case types.DELETE_SUCCESS:
       newState.deleteSuccess = true;
       break;
     default:

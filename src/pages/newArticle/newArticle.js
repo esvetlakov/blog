@@ -15,7 +15,7 @@ const antIcon = (
     spin
   />
 );
-// eslint-disable-next-line
+
 function NewArticle({ isPending, send }) {
   return (
     <div className={classes.wrap}>

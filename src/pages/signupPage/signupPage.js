@@ -17,14 +17,14 @@ const antIcon = (
     spin
   />
 );
-// eslint-disable-next-line
-function SignupPage({ user, create, test }) {
+
+function SignupPage({ user, create }) {
   const navigate = useNavigate();
   const { isPending, usernameErr, emailErr, regSuccess } = user;
   const {
     register,
     watch,
-    formState: { errors },
+    formState: { errors, isValid },
     handleSubmit,
   } = useForm({
     mode: 'onBlur',
@@ -36,7 +36,6 @@ function SignupPage({ user, create, test }) {
     }
   }, [regSuccess, navigate]);
 
-  // change to prod fn
   const onSubmit = ({ username: name, email: mail, password: pwd }) => {
     create({ user: { username: name, email: mail.toLowerCase(), password: pwd } });
   };
@@ -134,10 +133,16 @@ function SignupPage({ user, create, test }) {
           </label>
 
           <label className={classes.labelCheckBox}>
-            <input type="checkbox" className={classes.checkbox} required />
+            <input
+              type="checkbox"
+              className={classes.checkbox}
+              {...register('checkbox', {
+                required: true,
+              })}
+            />
             <span className={classes.checkboxText}>I agree to the processing of my personal information</span>
           </label>
-          <input type="submit" className={classes.submit} value="Create" />
+          <input type="submit" className={classes.submit} value="Create" disabled={!isValid} />
           <div className={classes.signin}>
             Already have an account?{' '}
             <Link to="/signin" className={classes.link}>

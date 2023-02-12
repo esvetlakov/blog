@@ -18,7 +18,7 @@ const antIcon = (
     spin
   />
 );
-// eslint-disable-next-line
+
 function EditArticle({ user, send, data, getArticle }) {
   const { isPending } = user;
   const { slug } = useParams();

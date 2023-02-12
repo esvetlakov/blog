@@ -15,7 +15,7 @@ const antIcon = (
     spin
   />
 );
-// eslint-disable-next-line
+
 function ProfilePage({ user, update }) {
   const { isPending, usernameErr, emailErr, username: oldName, email: oldMail, image: oldImage } = user;
   const {

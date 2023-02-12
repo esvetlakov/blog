@@ -1,5 +1,3 @@
-/* eslint no-unneeded-ternary: "error" */
-
 import { Button, Avatar, Skeleton } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';

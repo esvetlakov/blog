@@ -48,6 +48,7 @@ function ArticlesPage({ getArticles, changePage, articles, user, likeClick }) {
         {createArticlesCards()}
       </Spin>
       <Pagination
+        className={loading ? classes.pagLoading : null}
         defaultCurrent={1}
         defaultPageSize={20}
         current={currentPage}

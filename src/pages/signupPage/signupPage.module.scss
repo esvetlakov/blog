@@ -150,6 +150,11 @@
   cursor: pointer;
 }
 
+input[type="submit"]:disabled {
+  cursor: default;
+  background-color: rgba(24, 144, 255, 0.4);
+}
+
 .signin {
   margin-top: 7px;
 

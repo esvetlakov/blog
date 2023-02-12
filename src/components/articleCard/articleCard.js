@@ -1,24 +1,12 @@
 import { format, parseISO } from 'date-fns';
-import { Avatar, Tag } from 'antd';
+import { Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
-import { uid } from 'uid/single';
 
 import LikeButton from '../likeButton';
+import getTags from '../../utils/getTags';
 
 import classes from './articleCard.module.scss';
-
-const generateTagsList = (tags) =>
-  tags.map((el) => {
-    if (el !== '') {
-      return (
-        <Tag className={classes.tag} key={uid(20)}>
-          {el.slice(0, 40)}
-        </Tag>
-      );
-    }
-    return null;
-  });
 
 export default function ArticleCard({ article, isAuth, likeClick }) {
   const { title, description, createdAt, tagList, favorited, favoritesCount, author, slug } = article;
@@ -38,7 +26,7 @@ export default function ArticleCard({ article, isAuth, likeClick }) {
             slug={slug}
           />
         </div>
-        <div className={classes.tagList}>{generateTagsList(tagList)}</div>
+        <div className={classes.tagList}>{getTags(tagList, classes.tag)}</div>
         <p className={classes.desc}>{description.length > 300 ? `${description.slice(0, 300)}...` : description}</p>
       </div>
       <div className={classes.author}>

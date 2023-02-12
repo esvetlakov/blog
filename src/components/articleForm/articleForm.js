@@ -7,7 +7,7 @@ import classes from './articleForm.module.scss';
 export default function ArticleForm({ type, send, oldTitle, oldDesc, oldBody, oldTags, slug }) {
   const {
     register,
-    formState: { errors },
+    formState: { errors, isValid },
     handleSubmit,
     control,
     getValues,
@@ -25,11 +25,10 @@ export default function ArticleForm({ type, send, oldTitle, oldDesc, oldBody, ol
 
   const { fields, append, remove } = useFieldArray({ name: 'tags', control });
 
-  const onSubmit = async ({ title, desc, text, tags }) => {
+  const onSubmit = async ({ title: newTitle, desc, text, tags }) => {
     const resp = await send(
       {
-        // eslint-disable-next-line
-        article: { title: title, description: desc, body: text, tagList: tags.map((el) => el.name) },
+        article: { title: newTitle, description: desc, body: text, tagList: tags.map((el) => el.name) },
       },
       slug
     );
@@ -134,7 +133,7 @@ export default function ArticleForm({ type, send, oldTitle, oldDesc, oldBody, ol
           )}
         </div>
       ))}
-      <input type="submit" className={classes.submit} value="Send" />
+      <input type="submit" className={classes.submit} value="Send" disabled={!isValid} />
     </form>
   );
 }

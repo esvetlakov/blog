@@ -1,10 +1,12 @@
+const day = 86400000; // one day in ms
+
 const saveTokenToStorage = (token) => {
-  const tokenLifetime = Number(new Date()) + 86400000;
+  const tokenLifetime = Number(new Date()) + day;
   localStorage.setItem('token', token);
   localStorage.setItem('tokenLifetime', tokenLifetime);
 };
 
-const tokenCheck = () => {
+const checkToketValidation = () => {
   const token = localStorage.getItem('token');
   if (token !== null) {
     const tokenLifetime = localStorage.getItem('tokenLifetime');
@@ -16,7 +18,7 @@ const tokenCheck = () => {
   return false;
 };
 
-const loadTokenFromStorage = () => (tokenCheck() ? localStorage.getItem('token') : null);
+const loadTokenFromStorage = () => (checkToketValidation() ? localStorage.getItem('token') : null);
 
 const clearStorage = () => {
   localStorage.clear();
@@ -25,7 +27,7 @@ const clearStorage = () => {
 const storage = {
   saveTokenToStorage,
   loadTokenFromStorage,
-  tokenCheck,
+  checkToketValidation,
   clearStorage,
 };
 

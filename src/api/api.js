@@ -1,9 +1,11 @@
-/* eslint no-underscore-dangle: 0 */
-/* eslint no-console: ["error", { allow: ["log"] }] */
-// import { uid } from 'uid/single';
 import ky from 'ky';
 
 import storage from './storage';
+
+const logger = (err) => {
+  console.log(err.name);
+  console.log(err.message);
+};
 
 const _api = ky.create({ prefixUrl: 'https://blog.kata.academy/api' });
 
@@ -20,7 +22,7 @@ const getArticles = async (offset) => {
     const { articles, articlesCount } = res;
     return { articles, articlesCount };
   } catch (err) {
-    console.log(err.message);
+    logger(err);
   }
   return null;
 };
@@ -38,7 +40,7 @@ const getArticleBySlug = async (slug) => {
     const { article } = res;
     return { ...article };
   } catch (err) {
-    console.log(err.message);
+    logger(err);
   }
   return null;
 };
@@ -53,7 +55,6 @@ const createUser = async (data) => {
       return errorJson;
     }
   }
-  return null;
 };
 
 const loginUser = async (data) => {
@@ -66,7 +67,6 @@ const loginUser = async (data) => {
       return errorJson;
     }
   }
-  return null;
 };
 
 const updateUser = async (data) => {
@@ -87,7 +87,6 @@ const updateUser = async (data) => {
       return errorJson;
     }
   }
-  return null;
 };
 
 const likeArticle = async (slug) => {
@@ -102,11 +101,8 @@ const likeArticle = async (slug) => {
       .json();
     return res;
   } catch (error) {
-    if (error.name === 'HTTPError') {
-      console.log('err');
-    }
+    logger(error);
   }
-  return null;
 };
 
 const dislikeArticle = async (slug) => {
@@ -121,11 +117,8 @@ const dislikeArticle = async (slug) => {
       .json();
     return res;
   } catch (error) {
-    if (error.name === 'HTTPError') {
-      console.log('err');
-    }
+    logger(error);
   }
-  return null;
 };
 
 const createArticle = async (data) => {
@@ -141,9 +134,8 @@ const createArticle = async (data) => {
       .json();
     return res;
   } catch (error) {
-    console.log(error);
+    logger(error);
   }
-  return null;
 };
 
 const updateArticle = async (data, slug) => {
@@ -159,9 +151,8 @@ const updateArticle = async (data, slug) => {
       .json();
     return res;
   } catch (error) {
-    console.log(error);
+    logger(error);
   }
-  return null;
 };
 
 const deleteArticle = async (slug) => {
@@ -174,9 +165,8 @@ const deleteArticle = async (slug) => {
     });
     return res.ok;
   } catch (error) {
-    console.log(error);
+    logger(error);
   }
-  return null;
 };
 
 const loadSavedUser = async (token) => {
@@ -189,10 +179,9 @@ const loadSavedUser = async (token) => {
       })
       .json();
     return res;
-  } catch (err) {
-    console.log(err.message);
+  } catch (error) {
+    logger(error);
   }
-  return null;
 };
 
 const api = {
