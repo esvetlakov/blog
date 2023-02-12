@@ -1,7 +1,8 @@
 import { useForm } from 'react-hook-form';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
+import { toast } from 'react-toastify';
 
 import { updateUser } from '../../redux/actions/actions';
 
@@ -16,8 +17,17 @@ const antIcon = (
   />
 );
 
-function ProfilePage({ user, update }) {
-  const { isPending, usernameErr, emailErr, username: oldName, email: oldMail, image: oldImage } = user;
+function ProfilePage() {
+  const {
+    isPending,
+    usernameErr,
+    emailErr,
+    username: oldName,
+    email: oldMail,
+    image: oldImage,
+  } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
   const {
     register,
     formState: { errors },
@@ -41,7 +51,7 @@ function ProfilePage({ user, update }) {
     if (newEmail !== '') sendingData.email = newEmail;
     if (newPassword !== '') sendingData.password = newPassword;
     if (newAvatar !== '') sendingData.image = newAvatar;
-    update({ user: sendingData });
+    if (dispatch(updateUser({ user: sendingData }))) toast.success('Successful profile update', { delay: 100 });
   };
 
   return (
@@ -114,13 +124,4 @@ function ProfilePage({ user, update }) {
   );
 }
 
-const mapStateToProps = (state) => {
-  const { user } = state;
-  return { user };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  update: (data) => dispatch(updateUser(data)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage);
+export default ProfilePage;

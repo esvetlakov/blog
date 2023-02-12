@@ -6,9 +6,6 @@ const initialState = {
   token: '',
   image: '',
   isAuth: false,
-  regSuccess: false,
-  loginSuccess: false,
-  profileSuccess: false,
   isPending: false,
   usernameErr: false,
   emailErr: false,
@@ -24,12 +21,9 @@ function userReducer(state = initialState, action = {}) {
       newState.usernameErr = false;
       newState.emailErr = false;
       newState.loginErr = false;
-      newState.regSuccess = false;
-      newState.loginSuccess = false;
       break;
     case types.IS_PENDING:
       newState.isPending = true;
-      newState.profileSuccess = false;
       break;
     case types.REGISTRATION_FAILED:
       newState.isPending = false;
@@ -37,11 +31,11 @@ function userReducer(state = initialState, action = {}) {
       newState.emailErr = payload?.errors?.email;
       break;
     case types.REGISTRATION_SUCCESS:
+      newState.isPending = false;
       newState.username = payload.user.username;
       newState.email = payload.user.email;
       newState.token = payload.user.token;
       newState.isAuth = true;
-      newState.regSuccess = true;
       break;
     case types.LOGIN_FAILED:
       newState.isPending = false;
@@ -54,7 +48,6 @@ function userReducer(state = initialState, action = {}) {
       newState.token = payload.user.token;
       newState.image = payload.user.image;
       newState.isAuth = true;
-      newState.loginSuccess = true;
       break;
     case types.PROFILE_FAILED:
       newState.isPending = false;
@@ -67,19 +60,13 @@ function userReducer(state = initialState, action = {}) {
       newState.email = payload.user.email;
       newState.token = payload.user.token;
       newState.image = payload.user.image;
-      newState.profileSuccess = true;
-      break;
-    case types.ARTICLE_STARTED:
-      newState.regSuccess = false;
-      newState.loginSuccess = false;
       break;
     case types.LOGOUT:
       newState.username = '';
       newState.email = '';
       newState.image = '';
       newState.token = '';
-      newState.isAuth = '';
-      newState.loginSuccess = false;
+      newState.isAuth = false;
       break;
     case types.LOAD_SAVED_USER:
       newState.username = payload.user.username;

@@ -1,8 +1,8 @@
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
-function RequireAuth({ children, user, page }) {
-  const { isAuth, regSuccess, loginSuccess } = user;
+function RequireAuth({ children, page }) {
+  const { isAuth, regSuccess, loginSuccess } = useSelector((state) => state.user);
 
   if (page === 'reg' && isAuth && regSuccess !== true) {
     return <Navigate to="/" />;
@@ -17,9 +17,4 @@ function RequireAuth({ children, user, page }) {
   return children;
 }
 
-const mapStateToProps = (state) => {
-  const { user } = state;
-  return { user };
-};
-
-export default connect(mapStateToProps)(RequireAuth);
+export default RequireAuth;

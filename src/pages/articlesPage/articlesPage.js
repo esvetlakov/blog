@@ -1,4 +1,4 @@
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { Pagination, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
@@ -18,14 +18,18 @@ const antIcon = (
   />
 );
 
-function ArticlesPage({ getArticles, changePage, articles, user, likeClick }) {
-  const { data, articlesCount, currentPage, loading } = articles;
-  const { isAuth } = user;
+function ArticlesPage() {
+  const { data, articlesCount, currentPage, loading } = useSelector((state) => state.articles);
+  const { isAuth } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
+
+  const likeClick = (article, checked) => dispatch(likeArticle(article, checked));
 
   useEffect(() => {
     const offset = (currentPage - 1) * 20;
-    getArticles(offset);
-  }, [getArticles, currentPage]);
+    dispatch(loadArticles(offset));
+  }, [dispatch, currentPage]);
 
   const createArticlesCards = () => {
     if (!data.pages) {
@@ -37,8 +41,8 @@ function ArticlesPage({ getArticles, changePage, articles, user, likeClick }) {
 
   const onChange = (e) => {
     const offset = (e - 1) * 20;
-    getArticles(offset);
-    changePage(e);
+    dispatch(loadArticles(offset));
+    dispatch(changeCurrentPage(e));
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -60,15 +64,4 @@ function ArticlesPage({ getArticles, changePage, articles, user, likeClick }) {
   );
 }
 
-const mapStateToProps = (state) => {
-  const { articles, user } = state;
-  return { articles, user };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  getArticles: (offset) => dispatch(loadArticles(offset)),
-  changePage: (page) => dispatch(changeCurrentPage(page)),
-  likeClick: (slug, checked) => dispatch(likeArticle(slug, checked)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ArticlesPage);
+export default ArticlesPage;

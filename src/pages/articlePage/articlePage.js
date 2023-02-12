@@ -1,10 +1,11 @@
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import { LoadingOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Spin, Button, Popconfirm } from 'antd';
 import ReactMarkdown from 'react-markdown';
+import { toast } from 'react-toastify';
 
 import LikeButton from '../../components/likeButton';
 import { getCurrentArticle, likeArticle, deleteArticle } from '../../redux/actions/actions';
@@ -21,21 +22,29 @@ const antIcon = (
   />
 );
 
-function ArticlePage({ data, getArticle, isAuth, likeClick, username, deleteArt }) {
+function ArticlePage() {
   const { slug } = useParams();
-  const item = data[0];
+  const { data } = useSelector((state) => state.articles);
+  const { isAuth, username } = useSelector((state) => state.user);
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const item = data[0];
 
   useEffect(() => {
-    getArticle(slug);
-  }, [getArticle, slug]);
+    dispatch(getCurrentArticle(slug));
+  }, [dispatch, slug]);
 
-  const onDelete = async () => {
-    const res = await deleteArt(slug);
+  const onDelete = () => {
+    const res = dispatch(deleteArticle(slug));
     if (res) {
+      toast.success('Article successfully deleted', { delay: 100 });
       navigate('/');
     }
   };
+
+  const likeClick = (article, checked) => dispatch(likeArticle(article, checked));
 
   if (data.single) {
     const { title, description, createdAt, tagList, favorited, favoritesCount, author, body } = item;
@@ -103,17 +112,4 @@ function ArticlePage({ data, getArticle, isAuth, likeClick, username, deleteArt 
   );
 }
 
-const mapStateToProps = (state) => {
-  const { articles, user } = state;
-  const { data } = articles;
-  const { isAuth, username } = user;
-  return { data, isAuth, username };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  getArticle: (slug) => dispatch(getCurrentArticle(slug)),
-  likeClick: (slug, checked) => dispatch(likeArticle(slug, checked)),
-  deleteArt: (slug) => dispatch(deleteArticle(slug)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ArticlePage);
+export default ArticlePage;

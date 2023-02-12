@@ -1,9 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
+import { toast } from 'react-toastify';
 
 import { loginUser } from '../../redux/actions/actions';
 
@@ -18,9 +19,10 @@ const antIcon = (
   />
 );
 
-function SignInPage({ user, login }) {
+function SignInPage() {
   const navigate = useNavigate();
-  const { isPending, loginErr, loginSuccess } = user;
+  const dispatch = useDispatch();
+  const { isPending, loginErr, loginSuccess } = useSelector((state) => state.user);
   const {
     register,
     formState: { errors },
@@ -36,7 +38,10 @@ function SignInPage({ user, login }) {
   }, [loginSuccess, navigate]);
 
   const onSubmit = ({ email: mail, password: pwd }) => {
-    login({ user: { email: mail.toLowerCase(), password: pwd } });
+    if (dispatch(loginUser({ user: { email: mail.toLowerCase(), password: pwd } }))) {
+      toast.success('Successful login', { delay: 100, toastId: 'login' });
+      navigate(-1);
+    }
   };
 
   return (
@@ -84,13 +89,4 @@ function SignInPage({ user, login }) {
   );
 }
 
-const mapStateToProps = (state) => {
-  const { user } = state;
-  return { user };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  login: (data) => dispatch(loginUser(data)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignInPage);
+export default SignInPage;

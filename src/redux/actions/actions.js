@@ -21,7 +21,6 @@ export const changeCurrentPage = (page) => (dispatch) => {
 };
 
 export const createUser = (data) => async (dispatch) => {
-  dispatch({ type: types.ARTICLE_STARTED });
   dispatch({ type: types.REG_STARTED });
   storage.clearStorage();
   const res = await api.createUser(data);
@@ -30,11 +29,11 @@ export const createUser = (data) => async (dispatch) => {
   } else {
     storage.saveTokenToStorage(res.user.token);
     dispatch({ type: types.REGISTRATION_SUCCESS, payload: res });
+    return true;
   }
 };
 
 export const loginUser = (data) => async (dispatch) => {
-  dispatch({ type: types.ARTICLE_STARTED });
   dispatch({ type: types.REG_STARTED });
   storage.clearStorage();
   const res = await api.loginUser(data);
@@ -43,6 +42,7 @@ export const loginUser = (data) => async (dispatch) => {
   } else {
     storage.saveTokenToStorage(res.user.token);
     dispatch({ type: types.LOGIN_SUCCESS, payload: res });
+    return true;
   }
 };
 
@@ -68,6 +68,7 @@ export const updateUser = (data) => async (dispatch) => {
   } else {
     storage.saveTokenToStorage(res.user.token);
     dispatch({ type: types.PROFILE_SUCCESS, payload: res });
+    return true;
   }
 };
 
@@ -85,31 +86,25 @@ export const likeArticle = (slug, checked) => async (dispatch) => {
   }
 };
 
-export const createArticle = (data) => async (dispatch) => {
-  dispatch({ type: types.ARTICLE_STARTED });
+export const createArticle = (data) => async () => {
   const res = await api.createArticle(data);
   if (!res.errors) {
-    dispatch({ type: types.CREATE_ARTICLE_SUCCESS });
-    return res;
+    return { type: 'new', body: res };
   }
   return false;
 };
 
-export const updateArticle = (data, slug) => async (dispatch) => {
-  dispatch({ type: types.ARTICLE_STARTED });
+export const updateArticle = (data, slug) => async () => {
   const res = await api.updateArticle(data, slug);
   if (!res.errors) {
-    dispatch({ type: types.EDIT_ARTICLE_SUCCESS });
-    return res;
+    return { type: 'edit', body: res };
   }
   return false;
 };
 
-export const deleteArticle = (slug) => async (dispatch) => {
-  dispatch({ type: types.ARTICLE_STARTED });
+export const deleteArticle = (slug) => async () => {
   const res = await api.deleteArticle(slug);
   if (res) {
-    dispatch({ type: types.DELETE_SUCCESS });
     return true;
   }
   return false;

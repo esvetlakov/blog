@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import { Button, Result } from 'antd';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -16,34 +16,12 @@ import EditArticle from '../../pages/editArticle';
 import RequireAuth from '../../hoc/requireAuth';
 import { loadSavedUser } from '../../redux/actions/actions';
 
-function App({ user, loadUser, articles }) {
-  const { regSuccess, loginSuccess, profileSuccess } = user;
-  const { createSuccess, deleteSuccess, editSuccess } = articles;
+function App() {
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    loadUser();
-  }, [loadUser]);
-
-  useEffect(() => {
-    if (regSuccess) {
-      toast.success('Successful registration', { delay: 100, toastId: 'reg' });
-    }
-    if (loginSuccess) {
-      toast.success('Successful login', { delay: 100, toastId: 'login' });
-    }
-    if (profileSuccess) {
-      toast.success('Successful profile update', { delay: 100 });
-    }
-    if (createSuccess) {
-      toast.success('New article successfully created', { delay: 100 });
-    }
-    if (editSuccess) {
-      toast.success('Article edited successfully', { delay: 100 });
-    }
-    if (deleteSuccess) {
-      toast.success('Article successfully deleted', { delay: 100 });
-    }
-  }, [regSuccess, loginSuccess, profileSuccess, createSuccess, deleteSuccess, editSuccess]);
+    dispatch(loadSavedUser());
+  }, [dispatch]);
 
   return (
     <div className="app">
@@ -118,13 +96,4 @@ function App({ user, loadUser, articles }) {
   );
 }
 
-const mapStateToProps = (state) => {
-  const { user, articles } = state;
-  return { user, articles };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  loadUser: () => dispatch(loadSavedUser()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

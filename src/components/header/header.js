@@ -1,18 +1,19 @@
 import { Button, Avatar, Skeleton } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import { logOut } from '../../redux/actions/actions';
 
 import classes from './header.module.scss';
 
-function Header({ user, logout }) {
-  const { isAuth, username, image } = user;
+function Header() {
+  const dispatch = useDispatch();
+  const { isAuth, username, image } = useSelector((state) => state.user);
 
   const onClickLogout = () => {
-    logout();
+    dispatch(logOut());
     toast.success('Successful logout', { delay: 100 });
   };
 
@@ -78,13 +79,4 @@ function Header({ user, logout }) {
   );
 }
 
-const mapStateToProps = (state) => {
-  const { user } = state;
-  return { user };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  logout: () => dispatch(logOut()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default Header;

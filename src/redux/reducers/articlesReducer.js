@@ -5,9 +5,6 @@ const initialState = {
   articlesCount: 0,
   currentPage: 1,
   loading: true,
-  createSuccess: false,
-  deleteSuccess: false,
-  editSuccess: false,
 };
 
 function articlesReducer(state = initialState, action = {}) {
@@ -48,20 +45,6 @@ function articlesReducer(state = initialState, action = {}) {
           newState.data[index].favoritesCount = payload.article.favoritesCount;
         }
       });
-      break;
-    case types.CREATE_ARTICLE_SUCCESS:
-      newState.createSuccess = true;
-      break;
-    case types.ARTICLE_STARTED:
-      newState.deleteSuccess = false;
-      newState.createSuccess = false;
-      newState.editSuccess = false;
-      break;
-    case types.EDIT_ARTICLE_SUCCESS:
-      newState.editSuccess = true;
-      break;
-    case types.DELETE_SUCCESS:
-      newState.deleteSuccess = true;
       break;
     default:
       return state;

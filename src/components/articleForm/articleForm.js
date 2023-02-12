@@ -1,6 +1,7 @@
 import { Button } from 'antd';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import classes from './articleForm.module.scss';
 
@@ -32,8 +33,10 @@ export default function ArticleForm({ type, send, oldTitle, oldDesc, oldBody, ol
       },
       slug
     );
-    if (resp.article) {
-      navigate(`/articles/${resp.article.slug}`);
+    if (resp.body.article) {
+      if (resp.type === 'edit') toast.success('Article edited successfully', { delay: 100 });
+      if (resp.type === 'new') toast.success('New article successfully created', { delay: 100 });
+      navigate(`/articles/${resp.body.article.slug}`);
     }
   };
 

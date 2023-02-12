@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Spin } from 'antd';
 import { useParams, useNavigate } from 'react-router-dom';
 import { LoadingOutlined } from '@ant-design/icons';
@@ -19,16 +19,20 @@ const antIcon = (
   />
 );
 
-function EditArticle({ user, send, data, getArticle }) {
-  const { isPending } = user;
+function EditArticle() {
   const { slug } = useParams();
+  const { data } = useSelector((state) => state.articles);
+  const { user } = useSelector((state) => state);
+  const { isPending } = user;
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const article = data[0];
   const author = article?.author?.username;
 
   useEffect(() => {
-    if (article?.slug !== slug) getArticle(slug);
-  }, [getArticle, slug, article?.slug]);
+    if (article?.slug !== slug) dispatch(getCurrentArticle(slug));
+  }, [dispatch, slug, article?.slug]);
 
   useEffect(() => {
     if (author !== user.username && author !== undefined) {
@@ -43,7 +47,7 @@ function EditArticle({ user, send, data, getArticle }) {
         <Spin indicator={antIcon} spinning={isPending}>
           <ArticleForm
             type="edit"
-            send={send}
+            send={(articleData, articleSlug) => dispatch(updateArticle(articleData, articleSlug))}
             slug={slug}
             oldTitle={article.title}
             oldDesc={article.description}
@@ -56,15 +60,4 @@ function EditArticle({ user, send, data, getArticle }) {
   }
 }
 
-const mapStateToProps = (state) => {
-  const { user, articles } = state;
-  const { data } = articles;
-  return { user, data };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  getArticle: (slug) => dispatch(getCurrentArticle(slug)),
-  send: (data, slug) => dispatch(updateArticle(data, slug)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(EditArticle);
+export default EditArticle;

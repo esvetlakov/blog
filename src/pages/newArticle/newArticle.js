@@ -1,4 +1,4 @@
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 
@@ -16,23 +16,16 @@ const antIcon = (
   />
 );
 
-function NewArticle({ isPending, send }) {
+function NewArticle() {
+  const { isPending } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   return (
     <div className={classes.wrap}>
       <Spin indicator={antIcon} spinning={isPending}>
-        <ArticleForm type="new" send={send} />
+        <ArticleForm type="new" send={(data) => dispatch(createArticle(data))} />
       </Spin>
     </div>
   );
 }
 
-const mapStateToProps = (state) => {
-  const { user } = state;
-  return user;
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  send: (data) => dispatch(createArticle(data)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(NewArticle);
+export default NewArticle;

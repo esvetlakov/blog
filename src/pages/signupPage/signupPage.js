@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { connect } from 'react-redux';
-import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 
@@ -18,9 +18,10 @@ const antIcon = (
   />
 );
 
-function SignupPage({ user, create }) {
+function SignupPage() {
   const navigate = useNavigate();
-  const { isPending, usernameErr, emailErr, regSuccess } = user;
+  const dispatch = useDispatch();
+  const { isPending, usernameErr, emailErr } = useSelector((state) => state.user);
   const {
     register,
     watch,
@@ -30,14 +31,11 @@ function SignupPage({ user, create }) {
     mode: 'onBlur',
   });
 
-  useEffect(() => {
-    if (regSuccess) {
+  const onSubmit = ({ username: name, email: mail, password: pwd }) => {
+    if (dispatch(createUser({ user: { username: name, email: mail.toLowerCase(), password: pwd } }))) {
+      toast.success('Successful registration', { delay: 100, toastId: 'reg' });
       navigate('/');
     }
-  }, [regSuccess, navigate]);
-
-  const onSubmit = ({ username: name, email: mail, password: pwd }) => {
-    create({ user: { username: name, email: mail.toLowerCase(), password: pwd } });
   };
 
   return (
@@ -156,13 +154,4 @@ function SignupPage({ user, create }) {
   );
 }
 
-const mapStateToProps = (state) => {
-  const { user } = state;
-  return { user };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  create: (data) => dispatch(createUser(data)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignupPage);
+export default SignupPage;
